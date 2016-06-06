@@ -1,5 +1,6 @@
 require 'rake'
 
+require 'semmy/tasks/changelog_sections'
 require 'semmy/tasks/versioning'
 
 module Semmy
@@ -13,7 +14,7 @@ module Semmy
       namespace 'semmy' do
         Versioning.new(config)
         Docs.new(config)
-        Changelog.new(config)
+        ChangelogSections.new(config)
         Commit.new(config)
         Branches.new(config)
       end

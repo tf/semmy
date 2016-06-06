@@ -12,6 +12,10 @@ module Semmy
       specification.name
     end
 
+    def homepage
+      specification.homepage
+    end
+
     private
 
     def specification

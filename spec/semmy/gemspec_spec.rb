@@ -27,5 +27,16 @@ module Semmy
         expect(result).to eq('my_gem')
       end
     end
+
+    describe '.homepage' do
+      it 'returns homepage from gemspec' do
+        Fixtures.gemspec(name: 'my_gem',
+                         homepage: 'https://github.com/user/my_gem')
+
+        result = Gemspec.homepage
+
+        expect(result).to eq('https://github.com/user/my_gem')
+      end
+    end
   end
 end

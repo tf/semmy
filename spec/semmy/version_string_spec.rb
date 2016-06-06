@@ -37,5 +37,23 @@ module Semmy
         }.to raise_error(VersionString::UnexpectedSuffix)
       end
     end
+
+    describe '.previous_minor' do
+      it 'returns version with decremented minor version' do
+        version = '2.2.0'
+
+        result = VersionString.previous_minor(version)
+
+        expect(result).to eq('2.1.0')
+      end
+
+      it 'fails if minor is zero' do
+        version = '2.0.0'
+
+        expect {
+          VersionString.previous_minor(version)
+        }.to raise_error(VersionString::NoPreviousMinor)
+      end
+    end
   end
 end

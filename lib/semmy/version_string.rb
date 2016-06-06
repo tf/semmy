@@ -6,6 +6,8 @@ module Semmy
 
     class UnexpectedSuffix < Error; end
 
+    class NoPreviousMinor < Error; end
+
     def remove_suffix(version, suffix)
       new_version = version.dup
 
@@ -27,6 +29,17 @@ module Semmy
       components[1] += 1
       components << suffix
 
+      components.join('.')
+    end
+
+    def previous_minor(version)
+      components = version.split('.').map(&:to_i)
+
+      if components[1] == 0
+        fail(NoPreviousMinor, "Cannot get previous minor of #{version}.")
+      end
+
+      components[1] -= 1
       components.join('.')
     end
   end
