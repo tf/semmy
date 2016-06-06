@@ -1,5 +1,6 @@
 require 'rake'
 
+require 'semmy/tasks/branches'
 require 'semmy/tasks/changelog_sections'
 require 'semmy/tasks/commit'
 require 'semmy/tasks/docs'

@@ -46,5 +46,15 @@ module Semmy
     def minor_only(version)
       version.split('.')[0..1].join('.')
     end
+
+    def components(version)
+      components = version.split('.')
+
+      {
+        major: components[0],
+        minor: components[1],
+        patch: components[2]
+      }
+    end
   end
 end

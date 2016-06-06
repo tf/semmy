@@ -65,5 +65,15 @@ module Semmy
         expect(result).to eq('2.2')
       end
     end
+
+    describe '.components' do
+      it 'returns hash of components' do
+        version = '2.3.1'
+
+        result = VersionString.components(version)
+
+        expect(result).to eq(major: '2', minor: '3', patch: '1')
+      end
+    end
   end
 end
