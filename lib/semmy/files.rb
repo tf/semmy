@@ -2,11 +2,17 @@ module Semmy
   module Files
     module_function
 
-    def rewrite(file_name, update)
-      content = File.binread(file_name)
+    def rewrite(path, update)
+      content = File.binread(path)
 
-      File.open(file_name, 'wb') do |file|
+      File.open(path, 'wb') do |file|
         file.write(update.call(content))
+      end
+    end
+
+    def rewrite_all(glob, update)
+      Dir.glob(glob) do |path|
+        rewrite(path, update)
       end
     end
   end

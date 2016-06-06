@@ -55,5 +55,15 @@ module Semmy
         }.to raise_error(VersionString::NoPreviousMinor)
       end
     end
+
+    describe '.minor_only' do
+      it 'removes patch level version' do
+        version = '2.2.0'
+
+        result = VersionString.minor_only(version)
+
+        expect(result).to eq('2.2')
+      end
+    end
   end
 end

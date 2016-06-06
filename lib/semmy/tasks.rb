@@ -2,6 +2,7 @@ require 'rake'
 
 require 'semmy/tasks/changelog_sections'
 require 'semmy/tasks/commit'
+require 'semmy/tasks/docs'
 require 'semmy/tasks/versioning'
 
 module Semmy

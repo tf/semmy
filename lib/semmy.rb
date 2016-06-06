@@ -2,6 +2,7 @@ require 'semmy/error'
 
 require 'semmy/changelog'
 require 'semmy/configuration'
+require 'semmy/doc_tags'
 require 'semmy/files'
 require 'semmy/gemspec'
 require 'semmy/tasks'

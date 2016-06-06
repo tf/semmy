@@ -42,5 +42,9 @@ module Semmy
       components[1] -= 1
       components.join('.')
     end
+
+    def minor_only(version)
+      version.split('.')[0..1].join('.')
+    end
   end
 end

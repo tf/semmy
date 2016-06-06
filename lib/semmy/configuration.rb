@@ -13,6 +13,7 @@ module Semmy
     attr_accessor :changelog_unrelased_section_heading
     attr_accessor :changelog_unrelased_section_blank_slate
 
+    attr_accessor :source_files_with_docs_tags
     attr_accessor :rewritten_since_doc_tag
 
     def initialize
@@ -29,6 +30,7 @@ module Semmy
       @changelog_unrelased_section_heading = '## Changes on `master`'
       @changelog_unrelased_section_blank_slate = 'None so far.'
 
+      @source_files_with_docs_tags = '{app,lib}/**/*.{js,rb,scss}'
       @rewritten_since_doc_tag = 'edge'
 
       yield self if block_given?
