@@ -1,6 +1,7 @@
 require 'rake'
 
 require 'semmy/tasks/changelog_sections'
+require 'semmy/tasks/commit'
 require 'semmy/tasks/versioning'
 
 module Semmy
@@ -20,7 +21,7 @@ module Semmy
       end
 
       task 'release:prepare' => [
-        'semmy:versioning:remove_dev_suffix',
+        'semmy:versioning:remove_development_version_suffix',
         'semmy:docs:rewrite_since_tags',
         'semmy:changelog:close_section',
         'semmy:commit:prepare'
