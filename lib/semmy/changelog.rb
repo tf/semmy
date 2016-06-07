@@ -1,3 +1,5 @@
+require 'unindent'
+
 module Semmy
   module Changelog
     class InsertPointNotFound < Error; end
