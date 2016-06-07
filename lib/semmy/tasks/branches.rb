@@ -2,14 +2,8 @@ require 'git'
 
 module Semmy
   module Tasks
-    Branches = Struct.new(:config) do
-      include Rake::DSL
-
-      def initialize
-        config ||= Configuration.new
-
-        yield(config)
-
+    class Branches < Base
+      def define
         namespace 'branches' do
           task 'create_stable' do
             name = config.stable_branch_name %

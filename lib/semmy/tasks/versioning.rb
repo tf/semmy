@@ -1,13 +1,7 @@
 module Semmy
   module Tasks
-    Versioning = Struct.new(:config) do
-      include Rake::DSL
-
-      def initialize
-        config ||= Configuration.new
-
-        yield(config)
-
+    class Versioning < Base
+      def define
         namespace 'versioning' do
           task 'remove_development_version_suffix' do
             new_version = VersionString

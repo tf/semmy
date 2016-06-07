@@ -1,13 +1,7 @@
 module Semmy
   module Tasks
-    ChangelogSections = Struct.new(:config) do
-      include Rake::DSL
-
-      def initialize
-        config ||= Configuration.new
-
-        yield(config)
-
+    class ChangelogSections < Base
+      def define
         namespace 'changelog' do
           task 'close_section' do
             new_version = Gemspec.version
