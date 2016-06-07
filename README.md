@@ -1,41 +1,108 @@
 # Semmy
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/semmy`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+An opinionated set of rake tasks to maintain gems following semantic
+versioning principles.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add development dependency to your gemspec:
 
-```ruby
-gem 'semmy'
-```
+    # your.gemspec
+    s.add_development_dependency "semmy", "~> 1.0"
 
-And then execute:
+Install gems:
 
     $ bundle
 
-Or install it yourself as:
+Add the tasks to your Rakefile:
 
-    $ gem install semmy
+    # Rakefile
+    require 'semmy'
+
+    Semmy::Tasks.install
 
 ## Usage
 
-TODO: Write usage instructions here
+Semmy defines a new task to prepare a release:
 
-## Development
+    $ rake release:prepare
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake rspec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+This task:
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+* Removes the `dev` version suffix from the version file
+* Rewrites doc tags
+* Closes the section of the new version in the changelog.
+* Commits the changes
 
-## Contributing
+It is expected that a `release` task exists. Normally this tasks is
+provided by Bundler.
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/semmy. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
+    $ rake release
 
+Semmy registers additional actions which shall be
+executed right after the release:
 
-## License
+* Creates a stable branch
+* Bumps the version to the next minor version with `alpha` version
+  suffix.
+* Inserts an "Changes on master" section in the changelog.
 
-The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+## Assumptions
+
+### Git Branches and Tags
+
+Development happens directly on `master` or by merging pull
+requests. When a release is made, a stable branch called `x-y-stable`
+is created. Semmy relies on Bundler's `release` task to create version
+tags.
+
+Patch level versions are released via backports to the stable
+branches.
+
+### Version Suffix
+
+The version in the gem's version file is increased in a separate
+commit right after release. The version always has an `alpha` suffix
+(i.e. `1.1.0.alpha`), which is only removed in the last commit
+preparing the release. That way it is easy to see in a project's
+`Gemfile.lock` whether an unreleased version is used.
+
+Patch level versions are expected to be released immediately after
+backporting bug fixes. So there are never commits with a version
+suffix on stable branches.
+
+### Doc Tags
+
+Pull requests introducing new features, are expected to markup new
+code elements with a `@since edge` doc tag. When a release is
+prepared, `edge` is replaced with the current version string. That way
+pull request authors do not have to guess, which version will merge
+their commits.
+
+### Changelog
+
+Unreleased changes are listed in a section at the top. When preparing
+a release this section is closed by placing a version heading above it
+and inserting a compare link. Changelog entries for patch level
+versions are only committed on the stable branches since they only
+backport bug fixes from master.
+
+## Example Life Cycle
+
+### Releasing a Minor Version
+
+     1:  * (master) Other important bug fix
+     2:  * Minor bug fix
+     3:  * First new feature
+     4:  * Important bug fix
+     5:  * Begin work on 1.1
+     6:  | * (1-0-stable, v1.0.2) Prepare 1.0.2 release
+     7:  | * Backport of other bug fix
+     8:  | * (v1.0.1) Prepare 1.0.1 release
+     9:  | * Backport of important bug fix
+    10:  |/
+    11:  * (v1.0.0) Prepare 1.0.0 release
+
+### Releasing a Patch Level Version
+
 
