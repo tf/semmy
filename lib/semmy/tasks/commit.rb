@@ -7,13 +7,13 @@ module Semmy
         namespace 'commit' do
           task 'prepare' do
             git.commit_all(config.prepare_commit_message % {
-                             version: Gemspec.version
+                             version: Project.version
                            })
           end
 
           task 'bump' do
             git.commit_all(config.bump_commit_message % {
-                             version: Gemspec.version
+                             version: Project.version
                            })
           end
         end

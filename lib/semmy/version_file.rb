@@ -4,6 +4,8 @@ module Semmy
 
     class NotFound < Error; end
 
+    class ConstantNotFound < Error; end
+
     class UpdateFailed < Error; end
 
     def find(gem_name)
@@ -12,6 +14,13 @@ module Semmy
       Dir.glob('lib/**/version.rb').detect do |file_name|
         file_name =~ %r{lib/#{gem_name_matcher}/version.rb}
       end || fail(NotFound, 'No version file found.')
+    end
+
+    def parse_version(contents)
+      match = contents.match(/VERSION\s*=\s*['"]([^'"]+)['"]/) ||
+        fail(ConstantNotFound, 'Could not find version constant')
+
+      match[1]
     end
 
     Update = Struct.new(:new_version) do

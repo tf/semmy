@@ -4,10 +4,6 @@ module Semmy
 
     class NotFound < Error; end
 
-    def version
-      specification.version.to_s
-    end
-
     def gem_name
       specification.name
     end

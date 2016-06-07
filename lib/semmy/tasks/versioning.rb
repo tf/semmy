@@ -5,14 +5,14 @@ module Semmy
         namespace 'versioning' do
           task 'remove_development_version_suffix' do
             new_version = VersionString
-              .remove_suffix(Gemspec.version, config.development_version_suffix)
+              .remove_suffix(Project.version, config.development_version_suffix)
 
             rewrite_gemspec_version(new_version)
           end
 
           task 'bump_minor' do
             new_version = VersionString
-              .bump_minor(Gemspec.version, config.development_version_suffix)
+              .bump_minor(Project.version, config.development_version_suffix)
 
             rewrite_gemspec_version(new_version)
           end

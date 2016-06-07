@@ -42,6 +42,55 @@ module Semmy
       end
     end
 
+    describe '.parse_version' do
+      it 'returns value of version constant' do
+        contents = <<-END
+          module SomeGem
+            VERSION = '2.0.0'
+          end
+        END
+
+        result = VersionFile.parse_version(contents)
+
+        expect(result).to eq('2.0.0')
+      end
+
+      it 'handles unusual spacing' do
+        contents = <<-END
+          module SomeGem
+            VERSION  ='2.0.0'
+          end
+        END
+
+        result = VersionFile.parse_version(contents)
+
+        expect(result).to eq('2.0.0')
+      end
+
+      it 'handles doubles quotes' do
+        contents = <<-END
+          module SomeGem
+            VERSION = "2.0.0"
+          end
+        END
+
+        result = VersionFile.parse_version(contents)
+
+        expect(result).to eq('2.0.0')
+      end
+
+      it 'raises exception if version constant can not be found' do
+        contents = <<-END
+          module SomeGem
+          end
+        END
+
+        expect {
+          VersionFile.parse_version(contents)
+        }.to raise_error(VersionFile::ConstantNotFound)
+      end
+    end
+
     describe 'Update#call' do
       it 'replaces version string' do
         contents = <<-END

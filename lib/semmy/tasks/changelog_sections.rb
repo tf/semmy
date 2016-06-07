@@ -4,7 +4,7 @@ module Semmy
       def define
         namespace 'changelog' do
           task 'close_section' do
-            new_version = Gemspec.version
+            new_version = Project.version
             old_version = VersionString.previous_minor(new_version)
             homepage = Gemspec.homepage
 

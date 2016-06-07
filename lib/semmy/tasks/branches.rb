@@ -7,7 +7,7 @@ module Semmy
         namespace 'branches' do
           task 'create_stable' do
             name = config.stable_branch_name %
-              VersionString.components(Gemspec.version)
+              VersionString.components(Project.version)
 
             git.branch(name).checkout
           end
