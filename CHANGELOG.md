@@ -5,6 +5,7 @@
 [Compare changes](https://github.com/tf/semmy/compare/v0.2.0...master)
 
 - Fix default GitHub compare url.
+- Add link comparing to last patch level for stable release.
 
 ### Version 0.2.0
 

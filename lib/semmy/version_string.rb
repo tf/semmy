@@ -32,17 +32,6 @@ module Semmy
       components.join('.')
     end
 
-    def previous_minor(version)
-      components = version.split('.').map(&:to_i)
-
-      if components[1] == 0
-        fail(NoPreviousMinor, "Cannot get previous minor of #{version}.")
-      end
-
-      components[1] -= 1
-      components.join('.')
-    end
-
     def minor_only(version)
       version.split('.')[0..1].join('.')
     end
@@ -55,6 +44,20 @@ module Semmy
         minor: components[1],
         patch: components[2]
       }
+    end
+
+    def previous_version(version)
+      components = version.split('.').map(&:to_i)
+
+      if components[2] > 0
+        components[2] -= 1
+      elsif components[1] > 0
+        components[1] -= 1
+      else
+        fail(NoPreviousMinor, "Cannot get previous version of #{version}.")
+      end
+
+      components.join('.')
     end
   end
 end

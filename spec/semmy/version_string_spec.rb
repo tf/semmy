@@ -38,20 +38,28 @@ module Semmy
       end
     end
 
-    describe '.previous_minor' do
-      it 'returns version with decremented minor version' do
+    describe '.previous_version' do
+      it 'can decrement minor version' do
         version = '2.2.0'
 
-        result = VersionString.previous_minor(version)
+        result = VersionString.previous_version(version)
 
         expect(result).to eq('2.1.0')
+      end
+
+      it 'can decrement patch level version' do
+        version = '2.2.1'
+
+        result = VersionString.previous_version(version)
+
+        expect(result).to eq('2.2.0')
       end
 
       it 'fails if minor is zero' do
         version = '2.0.0'
 
         expect {
-          VersionString.previous_minor(version)
+          VersionString.previous_version(version)
         }.to raise_error(VersionString::NoPreviousMinor)
       end
     end

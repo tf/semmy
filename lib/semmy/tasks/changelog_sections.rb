@@ -5,7 +5,7 @@ module Semmy
         namespace 'changelog' do
           task 'close_section' do
             new_version = Project.version
-            old_version = VersionString.previous_minor(new_version)
+            old_version = VersionString.previous_version(new_version)
             homepage = Gemspec.homepage
 
             Shell.info("Inserting #{new_version} section " \
