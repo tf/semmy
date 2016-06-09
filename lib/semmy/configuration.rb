@@ -7,6 +7,8 @@ module Semmy
     attr_accessor :prepare_commit_message
     attr_accessor :bump_commit_message
 
+    attr_accessor :github_repository
+
     attr_accessor :changelog_path
     attr_accessor :changelog_version_section_heading
     attr_accessor :changelog_compare_url
@@ -26,7 +28,7 @@ module Semmy
 
       @changelog_path = 'CHANGELOG.md'
       @changelog_version_section_heading = '### Version %{version}'
-      @changelog_compare_url = '%{homepage}/compare/%{old_version_tag}..%{new_version_tag}'
+      @changelog_compare_url = '%{repository}/compare/%{old_version_tag}..%{new_version_tag}'
       @changelog_unrelased_section_heading = '### Changes on `master`'
       @changelog_unrelased_section_blank_slate = 'None so far.'
 

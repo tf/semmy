@@ -123,6 +123,18 @@ module Semmy
 
     def compare_url(config, interpolations)
       config.changelog_compare_url % interpolations
+        .merge(repository: repository_url(config,
+                                          interpolations[:homepage]))
+    end
+
+    private
+
+    def repository_url(config, homepage)
+      if config.github_repository
+        "https://github.com/#{config.github_repository}"
+      else
+        homepage
+      end
     end
   end
 end
