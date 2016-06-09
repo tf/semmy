@@ -24,7 +24,8 @@ module Semmy
                        "in #{config.changelog_path}...")
 
             Files.rewrite(config.changelog_path,
-                          Changelog::InsertUnreleasedSection.new(config))
+                          Changelog::InsertUnreleasedSection.new(config,
+                                                                 homepage: Gemspec.homepage))
           end
         end
       end

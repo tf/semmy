@@ -5,7 +5,7 @@ module Semmy
     let(:config) do
       Configuration.new do |c|
         c.changelog_version_section_heading = '## Version %{version}'
-        c.changelog_compare_url = '%{homepage}/compare/v%{old_version}..v%{new_version}'
+        c.changelog_compare_url = '%{homepage}/compare/%{old_version_tag}..%{new_version_tag}'
         c.changelog_unrelased_section_heading = '## Changes on master'
         c.changelog_unrelased_section_blank_slate = 'None so far.'
       end
@@ -17,6 +17,36 @@ module Semmy
           # Changelog
 
           ## Changes on master
+
+          - Something new
+        END
+
+        result = Changelog::CloseSection.new(config,
+                                             homepage: 'https://github.com/user/my_gem',
+                                             date: Date.new(2016, 1, 2),
+                                             old_version: '1.1.0',
+                                             new_version: '1.2.0').call(contents)
+
+        expect(result).to eq(<<-END.unindent)
+          # Changelog
+
+          ## Version 1.2.0
+
+          2016-01-02
+
+          [Compare changes](https://github.com/user/my_gem/compare/v1.1.0..v1.2.0)
+
+          - Something new
+        END
+      end
+
+      it 'replaces unreleased changes heading including compare link with version heading' do
+        contents = <<-END.unindent
+          # Changelog
+
+          ## Changes on master
+
+          [Compare changes](https://github.com/user/my_gem/compare/v1.1.0..master)
 
           - Something new
         END
@@ -75,7 +105,9 @@ module Semmy
           - Something else
         END
 
-        result = Changelog::InsertUnreleasedSection.new(config).call(contents)
+        result = Changelog::InsertUnreleasedSection
+          .new(config,
+               homepage: 'https://github.com/user/my_gem').call(contents)
 
         expect(result).to eq(<<-END.unindent)
           # Changelog
@@ -83,6 +115,8 @@ module Semmy
           Some text.
 
           ## Changes on master
+
+          [Compare changes](https://github.com/user/my_gem/compare/v1.2.0..master)
 
           None so far.
 
