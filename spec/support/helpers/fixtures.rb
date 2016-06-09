@@ -1,5 +1,6 @@
 require 'unindent'
 require 'fileutils'
+require 'git'
 
 module Fixtures
   extend self
@@ -32,6 +33,13 @@ module Fixtures
     end
 
     from_fixture(path, template, DEFAULT_GEMSPEC_OPTIONS.merge(options))
+  end
+
+  def git_workspace
+    Git.init.tap do |git|
+      git.config('user.name', 'Test user')
+      git.config('user.email', 'test@example.com')
+    end
   end
 
   private

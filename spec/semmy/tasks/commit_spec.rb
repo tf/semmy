@@ -10,7 +10,7 @@ module Semmy
           Fixtures.version_file('lib/my_gem/version.rb',
                                 module: 'MyGem',
                                 version: '1.4.0')
-          git = Git.init
+          git = Fixtures.git_workspace
           git.add(all: true)
           git.commit('Initial commit')
 
@@ -36,7 +36,7 @@ module Semmy
           Fixtures.version_file('lib/my_gem/version.rb',
                                 module: 'MyGem',
                                 version: '1.4.0')
-          git = Git.init
+          git = Fixtures.git_workspace
           git.add(all: true)
           git.commit('Initial commit')
 

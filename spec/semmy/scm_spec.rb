@@ -5,7 +5,7 @@ module Semmy
     describe '.on_master?' do
       it 'returns true when on master branch' do
         Fixtures.file('some', 'text')
-        git = Git.init
+        git = Fixtures.git_workspace
         git.add(all: true)
         git.commit('Initial commit')
 
@@ -16,7 +16,7 @@ module Semmy
 
       it 'returns false when on other branch' do
         Fixtures.file('some', 'text')
-        git = Git.init
+        git = Fixtures.git_workspace
         git.add(all: true)
         git.commit('Initial commit')
         git.branch('other').checkout
@@ -30,7 +30,7 @@ module Semmy
     describe '.on_stable?' do
       it 'returns true when current branch matches stable branch name' do
         Fixtures.file('some', 'text')
-        git = Git.init
+        git = Fixtures.git_workspace
         git.add(all: true)
         git.commit('Initial commit')
         git.branch('1-0-stable').checkout
@@ -42,7 +42,7 @@ module Semmy
 
       it 'returns false when on other branch' do
         Fixtures.file('some', 'text')
-        git = Git.init
+        git = Fixtures.git_workspace
         git.add(all: true)
         git.commit('Initial commit')
         git.branch('other').checkout
