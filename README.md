@@ -2,6 +2,8 @@
 
 [![Gem Version](https://badge.fury.io/rb/semmy.svg)](http://badge.fury.io/rb/semmy)
 [![Build Status](https://travis-ci.org/tf/semmy.svg?branch=master)](https://travis-ci.org/tf/semmy)
+[![Coverage Status](https://coveralls.io/repos/github/tf/semmy/badge.svg?branch=master)](https://coveralls.io/github/tf/semmy?branch=master)
+[![Code Climate](https://codeclimate.com/github/tf/semmy/badges/gpa.svg)](https://codeclimate.com/github/tf/semmy)
 
 An opinionated set of rake tasks to maintain gems following semantic
 versioning principles.
