@@ -13,10 +13,10 @@ module Semmy
 
             Files.rewrite(config.changelog_path,
                           Changelog::CloseSection.new(config,
-                                                     new_version: new_version,
-                                                     old_version: old_version,
-                                                     homepage: homepage,
-                                                     date: Date.today))
+                                                      new_version: new_version,
+                                                      old_version: old_version,
+                                                      homepage: homepage,
+                                                      date: Date.today))
           end
 
           task 'add_unreleased_section' do
@@ -24,7 +24,7 @@ module Semmy
                        "in #{config.changelog_path}...")
 
             Files.rewrite(config.changelog_path,
-                          Changlog::InsertSection.new(config))
+                          Changelog::InsertUnreleasedSection.new(config))
           end
         end
       end

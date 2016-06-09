@@ -51,7 +51,7 @@ module Semmy
         'semmy:branches:create_stable',
         'semmy:versioning:bump_minor',
         'semmy:changelog:add_unreleased_section',
-        'semmy:commit:dev'
+        'semmy:commit:bump'
       ]
 
       desc 'Prepare repository for development of next verion'

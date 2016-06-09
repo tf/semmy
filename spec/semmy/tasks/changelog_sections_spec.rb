@@ -47,6 +47,29 @@ module Semmy
           expect(changelog.read).to include(compare_url)
         end
       end
+
+      describe 'add_unreleased_section task' do
+        it 'inserts unreleased changes heading' do
+          Fixtures.gemspec(name: 'my_gem', module: 'MyGem')
+          Fixtures.version_file('lib/my_gem/version.rb',
+                                module: 'MyGem',
+                                version: '1.4.0')
+          changelog = Fixtures.file('CHANGELOG.md', <<-END)
+            # Changelog
+
+            ## Version 2.3.0
+          END
+
+          ChangelogSections.new do |config|
+            config.changelog_version_section_heading = '## Version %{version}'
+            config.changelog_unrelased_section_heading = '## Changes on master'
+          end
+
+          Rake.application['changelog:add_unreleased_section'].invoke
+
+          expect(changelog.read).to include('## Changes on master')
+        end
+      end
     end
   end
 end
