@@ -22,6 +22,24 @@ module Semmy
 
           expect(git.branches['1-4-stable']).not_to be_nil
         end
+
+        it 'stays on master' do
+          Fixtures.gemspec(name: 'my_gem', module: 'MyGem')
+          Fixtures.version_file('lib/my_gem/version.rb',
+                                module: 'MyGem',
+                                version: '1.4.0')
+          git = Git.init
+          git.add(all: true)
+          git.commit('Prepare 1.4.0 release')
+
+          Branches.new do |config|
+            config.stable_branch_name = '%{major}-%{minor}-stable'
+          end
+
+          Rake.application['branches:create_stable'].invoke
+
+          expect(git.current_branch).to eq('master')
+        end
       end
     end
   end

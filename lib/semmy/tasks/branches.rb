@@ -11,7 +11,7 @@ module Semmy
 
             Shell.info("Creating stable branch #{name}...")
 
-            git.branch(name).checkout
+            git.branch(name).create
           end
         end
 
