@@ -23,8 +23,8 @@ module Semmy
 
       @stable_branch_name = '%{major}-%{minor}-stable'
 
-      @prepare_commit_message = 'Prepare %{version} Release'
-      @bump_commit_message = 'Bump Version to %{version}'
+      @prepare_commit_message = 'Prepare %{version} release'
+      @bump_commit_message = 'Bump version to %{version}'
 
       @changelog_path = 'CHANGELOG.md'
       @changelog_version_section_heading = '### Version %{version}'
