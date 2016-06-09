@@ -1,5 +1,7 @@
 # CHANGELOG
 
-### Changes on `master`
+### Version 0.1.0
 
-- Initial commit
+2016-06-09
+
+- Initial release
