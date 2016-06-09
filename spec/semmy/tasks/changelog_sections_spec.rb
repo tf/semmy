@@ -43,7 +43,7 @@ module Semmy
 
           Rake.application['changelog:close_section'].invoke
 
-          compare_url = 'https://github.com/me/my_gem/compare/v1.3.0..v1.4.0'
+          compare_url = 'https://github.com/me/my_gem/compare/v1.3.0...v1.4.0'
           expect(changelog.read).to include(compare_url)
         end
 
@@ -67,7 +67,7 @@ module Semmy
 
           Rake.application['changelog:close_section'].invoke
 
-          compare_url = 'https://github.com/me/my_gem/compare/v1.3.0..v1.4.0'
+          compare_url = 'https://github.com/me/my_gem/compare/v1.3.0...v1.4.0'
           expect(changelog.read).to include(compare_url)
         end
       end

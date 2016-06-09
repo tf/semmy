@@ -5,7 +5,7 @@ module Semmy
     let(:config) do
       Configuration.new do |c|
         c.changelog_version_section_heading = '## Version %{version}'
-        c.changelog_compare_url = '%{homepage}/compare/%{old_version_tag}..%{new_version_tag}'
+        c.changelog_compare_url = '%{homepage}/compare/%{old_version_tag}...%{new_version_tag}'
         c.changelog_unrelased_section_heading = '## Changes on master'
         c.changelog_unrelased_section_blank_slate = 'None so far.'
       end
@@ -34,7 +34,7 @@ module Semmy
 
           2016-01-02
 
-          [Compare changes](https://github.com/user/my_gem/compare/v1.1.0..v1.2.0)
+          [Compare changes](https://github.com/user/my_gem/compare/v1.1.0...v1.2.0)
 
           - Something new
         END
@@ -46,7 +46,7 @@ module Semmy
 
           ## Changes on master
 
-          [Compare changes](https://github.com/user/my_gem/compare/v1.1.0..master)
+          [Compare changes](https://github.com/user/my_gem/compare/v1.1.0...master)
 
           - Something new
         END
@@ -64,7 +64,7 @@ module Semmy
 
           2016-01-02
 
-          [Compare changes](https://github.com/user/my_gem/compare/v1.1.0..v1.2.0)
+          [Compare changes](https://github.com/user/my_gem/compare/v1.1.0...v1.2.0)
 
           - Something new
         END
@@ -116,7 +116,7 @@ module Semmy
 
           ## Changes on master
 
-          [Compare changes](https://github.com/user/my_gem/compare/v1.2.0..master)
+          [Compare changes](https://github.com/user/my_gem/compare/v1.2.0...master)
 
           None so far.
 

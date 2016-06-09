@@ -1,10 +1,16 @@
 # CHANGELOG
 
+### Changes on `master`
+
+[Compare changes](https://github.com/tf/semmy/compare/v0.2.0...master)
+
+- Fix default GitHub compare url.
+
 ### Version 0.2.0
 
 2016-06-09
 
-[Compare changes](https://github.com/tf/semmy/compare/v0.1.0..v0.2.0)
+[Compare changes](https://github.com/tf/semmy/compare/v0.1.0...v0.2.0)
 
 - Fine tune default commit messages.
 
