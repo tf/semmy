@@ -71,7 +71,7 @@ module Semmy
 
       def insert_before(line_matcher, text, inserted_text)
         text.dup.tap do |result|
-          unless (result.gsub!(line_matcher, inserted_text + "\n\\0"))
+          unless (result.sub!(line_matcher, inserted_text + "\n\\0"))
             fail(InsertPointNotFound,
                  "Insert point not found.")
           end

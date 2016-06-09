@@ -69,6 +69,10 @@ module Semmy
           ## Version 1.2.0
 
           - Something new
+
+          ## Version 1.1.0
+
+          - Something else
         END
 
         result = Changelog::InsertUnreleasedSection.new(config).call(contents)
@@ -85,6 +89,10 @@ module Semmy
           ## Version 1.2.0
 
           - Something new
+
+          ## Version 1.1.0
+
+          - Something else
         END
       end
     end
