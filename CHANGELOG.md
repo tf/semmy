@@ -1,8 +1,10 @@
 # CHANGELOG
 
-### Changes on `master`
+### Version 0.2.1
 
-[Compare changes](https://github.com/tf/semmy/compare/v0.2.0...master)
+2016-06-09
+
+[Compare changes](https://github.com/tf/semmy/compare/v0.2.0...v0.2.1)
 
 - Fix default GitHub compare url.
 - Add link comparing to last patch level for stable release.
