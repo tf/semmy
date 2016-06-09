@@ -49,7 +49,7 @@ module Semmy
       end
     end
 
-    describe 'release:after task' do
+    describe 'release:after task invoked after release task' do
       it 'passes on master' do
         Fixtures.gemspec(name: 'my_gem', module: 'MyGem')
         Fixtures.version_file('lib/my_gem/version.rb',
@@ -68,7 +68,7 @@ module Semmy
         Tasks.install
 
         expect {
-          Rake.application['release:after'].invoke
+          Rake.application['release'].invoke
         }.not_to raise_error
       end
     end

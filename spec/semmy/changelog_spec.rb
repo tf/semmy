@@ -129,6 +129,23 @@ module Semmy
           - Something else
         END
       end
+
+      it 'fails if version section heading is not found' do
+        contents = <<-END.unindent
+          # Changelog
+
+          ## Something else
+
+          - Something new
+        END
+
+        expect {
+          Changelog::InsertUnreleasedSection
+            .new(config,
+                 homepage: 'https://github.com/user/my_gem')
+            .call(contents)
+        }.to raise_error(Changelog::InsertPointNotFound)
+      end
     end
   end
 end
