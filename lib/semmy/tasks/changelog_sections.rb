@@ -8,6 +8,9 @@ module Semmy
             old_version = VersionString.previous_minor(new_version)
             homepage = Gemspec.homepage
 
+            Shell.info("Inserting #{new_version} section " \
+                       "in #{config.changelog_path}...")
+
             Files.rewrite(config.changelog_path,
                           Changelog::CloseSection.new(config,
                                                      new_version: new_version,
@@ -17,6 +20,9 @@ module Semmy
           end
 
           task 'add_unreleased_section' do
+            Shell.info('Inserting unreleased section ' \
+                       "in #{config.changelog_path}...")
+
             Files.rewrite(config.changelog_path,
                           Changlog::InsertSection.new(config))
           end

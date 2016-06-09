@@ -7,12 +7,17 @@ module Semmy
             new_version = VersionString
               .remove_suffix(Project.version, config.development_version_suffix)
 
+            Shell.info("Removing #{config.development_version_suffix} suffix " \
+                       'from version.')
+
             rewrite_gemspec_version(new_version)
           end
 
           task 'bump_minor' do
             new_version = VersionString
               .bump_minor(Project.version, config.development_version_suffix)
+
+            Shell.info("Bumping version to #{new_version}.")
 
             rewrite_gemspec_version(new_version)
           end

@@ -9,6 +9,8 @@ module Semmy
             name = config.stable_branch_name %
               VersionString.components(Project.version)
 
+            Shell.info("Creating stable branch #{name}...")
+
             git.branch(name).checkout
           end
         end
