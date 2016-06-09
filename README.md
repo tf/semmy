@@ -1,5 +1,8 @@
 # Semmy
 
+[![Gem Version](https://badge.fury.io/rb/semmy.svg)](http://badge.fury.io/rb/semmy)
+[![Build Status](https://travis-ci.org/tf/semmy.svg?branch=master)](https://travis-ci.org/tf/semmy)
+
 An opinionated set of rake tasks to maintain gems following semantic
 versioning principles.
 
