@@ -28,7 +28,7 @@ module Semmy
 
       @changelog_path = 'CHANGELOG.md'
       @changelog_version_section_heading = '### Version %{version}'
-      @changelog_compare_url = '%{repository}/compare/%{old_version_tag}..%{new_version_tag}'
+      @changelog_compare_url = '%{repository}/compare/%{old_version_tag}...%{new_version_tag}'
       @changelog_unrelased_section_heading = '### Changes on `master`'
       @changelog_unrelased_section_blank_slate = 'None so far.'
 
