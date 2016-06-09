@@ -14,7 +14,7 @@ versioning principles.
 Add development dependency to your gemspec:
 
     # your.gemspec
-    s.add_development_dependency "semmy", "~> 1.0"
+    s.add_development_dependency 'semmy', '~> 0.2'
 
 Install gems:
 
