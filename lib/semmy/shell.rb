@@ -10,14 +10,6 @@ module Semmy
       say(text, :green)
     end
 
-    def warn(text)
-      say(text, :yellow)
-    end
-
-    def error(text)
-      say(text, :red)
-    end
-
     private
 
     def say(text, color)
