@@ -13,7 +13,7 @@ module Semmy
     private
 
     def stable_branch_matcher(stable_branch_name)
-      Regexp.new(p(stable_branch_name.gsub(/%\{\w+\}/, '[0-9]+')))
+      Regexp.new(stable_branch_name.gsub(/%\{\w+\}/, '[0-9]+'))
     end
 
     def git
