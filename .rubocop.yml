@@ -1,0 +1,27 @@
+# Use double quotes only for interpolation.
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+
+# Place dots at the beginning of multiline method calls.
+Style/DotPosition:
+  EnforcedStyle: leading
+
+# Allow using {} when chaining methods
+Style/BlockDelimiters:
+  EnforcedStyle: braces_for_chaining
+
+# The default of 80 characters is a little to narrow.
+Metrics/LineLength:
+  Max: 100
+
+# Only place spaces inside blocks written with braces.
+Style/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space
+
+# Allow extend self
+Style/ModuleFunction:
+  Enabled: false
+
+# Do not require class and module doc strings
+Style/Documentation:
+  Enabled: false
