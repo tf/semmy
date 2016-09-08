@@ -10,6 +10,14 @@ module Semmy
       say(text, :green)
     end
 
+    def error(text)
+      say(text, :red)
+    end
+
+    def sub_process_output(text)
+      say(text, :yellow)
+    end
+
     private
 
     def say(text, color)

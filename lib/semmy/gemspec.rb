@@ -12,15 +12,15 @@ module Semmy
       specification.homepage
     end
 
+    def path
+      Dir.glob('*.gemspec').first ||
+        fail(NotFound, 'Gemspec not found.')
+    end
+
     private
 
     def specification
       Gem::Specification.load(path)
-    end
-
-    def path
-      Dir.glob('*.gemspec').first ||
-        fail(NotFound, 'Gemspec not found.')
     end
   end
 end

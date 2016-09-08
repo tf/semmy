@@ -32,6 +32,13 @@ module Fixtures
       Object.send(:remove_const, options[:module].to_sym)
     end
 
+    options[:dependency_statements] =
+      if options.key?(:dependency)
+        "spec.add_dependency '#{options[:dependency]}', '1.0'"
+      else
+        ''
+      end
+
     from_fixture(path, template, DEFAULT_GEMSPEC_OPTIONS.merge(options))
   end
 
