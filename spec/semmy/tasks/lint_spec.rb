@@ -30,6 +30,26 @@ module Semmy
           }.to raise_error(SystemExit)
         end
       end
+
+      describe 'locales task' do
+        it 'returns false if no config/locales/new/ direcotry is present' do
+          Lint.new
+
+          expect {
+            Rake.application['lint:locales'].invoke
+          }.not_to raise_error
+        end
+
+        it 'returns true if config/locales/new/ files are present' do
+          Fixtures.file('config/locales/new/some.yml')
+
+          Lint.new
+
+          expect {
+            Rake.application['lint:locales'].invoke
+          }.to raise_error(SystemExit)
+        end
+      end
     end
   end
 end
