@@ -5,6 +5,7 @@ require 'semmy/tasks/branches'
 require 'semmy/tasks/changelog_sections'
 require 'semmy/tasks/commit'
 require 'semmy/tasks/docs'
+require 'semmy/tasks/lint'
 require 'semmy/tasks/versioning'
 
 module Semmy
@@ -17,6 +18,7 @@ module Semmy
       yield config if block_given?
 
       namespace 'semmy' do
+        Lint.new(config)
         Versioning.new(config)
         Docs.new(config)
         ChangelogSections.new(config)
@@ -39,7 +41,7 @@ module Semmy
       ]
 
       desc 'Prepare release'
-      task 'release:prepare' do
+      task 'release:prepare' => 'semmy:lint' do
         if Scm.on_master?
           Rake.application['release:prepare:master'].invoke
         elsif Scm.on_stable?(config.stable_branch_name)
