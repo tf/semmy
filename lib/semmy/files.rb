@@ -4,9 +4,10 @@ module Semmy
 
     def rewrite(path, update)
       content = File.binread(path)
+      updated_content = update.call(content)
 
       File.open(path, 'wb') do |file|
-        file.write(update.call(content))
+        file.write(updated_content)
       end
     end
 

@@ -2,6 +2,8 @@ require 'spec_helper'
 
 module Semmy
   describe Files, fixture_files: true do
+    class StubError < StandardError; end
+
     describe '.rewrite' do
       it 'replaces contents with result of calling update' do
         file = Fixtures.file('some.rb', 'module A; end')
@@ -10,6 +12,17 @@ module Semmy
         Files.rewrite('some.rb', update)
 
         expect(file.read).to eq('module B; end')
+      end
+
+      it 'leaves file unchanged if update fails' do
+        file = Fixtures.file('some.rb', 'module A; end')
+        update = ->(_) { fail(StubError) }
+
+        expect {
+          Files.rewrite('some.rb', update)
+        }.to raise_error(StubError)
+
+        expect(file.read).to eq('module A; end')
       end
     end
 
