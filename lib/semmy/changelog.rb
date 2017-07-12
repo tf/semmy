@@ -118,53 +118,6 @@ module Semmy
       end
     end
 
-    InsertUnreleasedSection = Struct.new(:config, :options) do
-      def call(contents)
-        insert_before(version_line_matcher,
-                      contents,
-                      unreleased_section(contents))
-      end
-
-      private
-
-      def unreleased_section(contents)
-        <<-END.unindent
-          #{config.changelog_unrelased_section_heading}
-
-          #{compare_link_for_master(contents)}
-
-          #{config.changelog_unrelased_section_blank_slate}
-        END
-      end
-
-      def compare_link_for_master(contents)
-        Changelog.compare_link(config,
-                               homepage: options[:homepage],
-                               old_version_tag: last_version_tag(contents),
-                               new_version_tag: 'master')
-      end
-
-      def last_version_tag(contents)
-        match = contents.match(version_line_matcher)
-        match && Changelog.version_tag(match[1])
-      end
-
-      def version_line_matcher
-        Regexp.new(config.changelog_version_section_heading % {
-                     version: '([0-9.]+)'
-                   })
-      end
-
-      def insert_before(line_matcher, text, inserted_text)
-        text.dup.tap do |result|
-          unless (result.sub!(line_matcher, inserted_text + "\n\\0"))
-            fail(InsertPointNotFound,
-                 "Insert point not found.")
-          end
-        end
-      end
-    end
-
     def version_tag(version)
       "v#{version}"
     end

@@ -91,65 +91,6 @@ module Semmy
       end
     end
 
-    describe 'Changelog::InsertUnreleasedSection#call' do
-      it 'insert unreleased section before first version section' do
-        contents = <<-END.unindent
-          # Changelog
-
-          Some text.
-
-          ## Version 1.2.0
-
-          - Something new
-
-          ## Version 1.1.0
-
-          - Something else
-        END
-
-        result = Changelog::InsertUnreleasedSection
-          .new(config,
-               homepage: 'https://github.com/user/my_gem').call(contents)
-
-        expect(result).to eq(<<-END.unindent)
-          # Changelog
-
-          Some text.
-
-          ## Changes on master
-
-          [Compare changes](https://github.com/user/my_gem/compare/v1.2.0...master)
-
-          None so far.
-
-          ## Version 1.2.0
-
-          - Something new
-
-          ## Version 1.1.0
-
-          - Something else
-        END
-      end
-
-      it 'fails if version section heading is not found' do
-        contents = <<-END.unindent
-          # Changelog
-
-          ## Something else
-
-          - Something new
-        END
-
-        expect {
-          Changelog::InsertUnreleasedSection
-            .new(config,
-                 homepage: 'https://github.com/user/my_gem')
-            .call(contents)
-        }.to raise_error(Changelog::InsertPointNotFound)
-      end
-    end
-
     describe 'Changelog::UpdateForMinor#call' do
       it 'replaces previous version sections with section for minor' \
          'that includes link to previous stable branch' do
