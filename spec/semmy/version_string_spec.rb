@@ -83,5 +83,33 @@ module Semmy
         expect(result).to eq(major: '2', minor: '3', patch: '1')
       end
     end
+
+    describe '.previous_stable_branch_name' do
+      let(:stable_branch_name_pattern) { '%{major}-%{minor}-stable' }
+
+      it 'returns last stable branch name for minor version' do
+        version = '1.2.0'
+
+        result = VersionString.previous_stable_branch_name(version, stable_branch_name_pattern)
+
+        expect(result).to eq('1-1-stable')
+      end
+
+      it 'returns last stable branch name for minor version with patch level' do
+        version = '1.2.4'
+
+        result = VersionString.previous_stable_branch_name(version, stable_branch_name_pattern)
+
+        expect(result).to eq('1-1-stable')
+      end
+
+      it 'fails if minor is zero' do
+        version = '2.0.0'
+
+        expect {
+          VersionString.previous_stable_branch_name(version, stable_branch_name_pattern)
+        }.to raise_error(VersionString::NoPreviousMinor)
+      end
+    end
   end
 end

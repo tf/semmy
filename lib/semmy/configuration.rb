@@ -9,11 +9,14 @@ module Semmy
 
     attr_accessor :github_repository
 
+    attr_accessor :compare_url
+    attr_accessor :file_url
+
     attr_accessor :changelog_path
     attr_accessor :changelog_version_section_heading
-    attr_accessor :changelog_compare_url
     attr_accessor :changelog_unrelased_section_heading
     attr_accessor :changelog_unrelased_section_blank_slate
+    attr_accessor :changelog_previous_changes_link
 
     attr_accessor :source_files_with_docs_tags
     attr_accessor :rewritten_since_doc_tag
@@ -26,11 +29,14 @@ module Semmy
       @prepare_commit_message = 'Prepare %{version} release'
       @bump_commit_message = 'Bump version to %{version}'
 
+      @compare_url = '%{repository}/compare/%{old_version_tag}...%{new_version_tag}'
+      @file_url = '%{repository}/blob/%{branch}/%{path}'
+
       @changelog_path = 'CHANGELOG.md'
       @changelog_version_section_heading = '### Version %{version}'
-      @changelog_compare_url = '%{repository}/compare/%{old_version_tag}...%{new_version_tag}'
       @changelog_unrelased_section_heading = '### Changes on `master`'
       @changelog_unrelased_section_blank_slate = 'None so far.'
+      @changelog_previous_changes_link = "See\n[%{branch} branch](%{url})\nfor previous changes."
 
       @source_files_with_docs_tags = '{app,lib}/**/*.{js,rb,scss}'
       @rewritten_since_doc_tag = 'edge'

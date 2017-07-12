@@ -52,7 +52,7 @@ module Semmy
       task 'release:after:master' => [
         'semmy:branches:create_stable',
         'semmy:versioning:bump_minor',
-        'semmy:changelog:add_unreleased_section',
+        'semmy:changelog:update_for_minor',
         'semmy:commit:bump'
       ]
 

@@ -94,6 +94,40 @@ module Semmy
           expect(changelog.read).to include('## Changes on master')
         end
       end
+
+      describe 'update_for_minor task' do
+        before do
+          Fixtures.gemspec(name: 'my_gem', module: 'MyGem')
+          Fixtures.version_file('lib/my_gem/version.rb',
+                                module: 'MyGem',
+                                version: '2.3.0.dev')
+
+          ChangelogSections.new do |config|
+            config.changelog_version_section_heading = '## Version %{version}'
+            config.changelog_unrelased_section_heading = '## Changes on master'
+          end
+        end
+
+        let!(:changelog) do
+          Fixtures.file('CHANGELOG.md', <<-END)
+            # Changelog
+
+            ## Version 2.2.0
+          END
+        end
+
+        it 'inserts unreleased changes section' do
+          Rake.application['changelog:update_for_minor'].invoke
+
+          expect(changelog.read).to include('## Changes on master')
+        end
+
+        it 'removes previous version section' do
+          Rake.application['changelog:update_for_minor'].invoke
+
+          expect(changelog.read).not_to include('## Version 2.2.0')
+        end
+      end
     end
   end
 end

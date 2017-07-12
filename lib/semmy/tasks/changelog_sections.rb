@@ -27,6 +27,19 @@ module Semmy
                           Changelog::InsertUnreleasedSection.new(config,
                                                                  homepage: Gemspec.homepage))
           end
+
+          task 'update_for_minor' do
+            stable_branch = VersionString.previous_stable_branch_name(Project.version,
+                                                                      config.stable_branch_name)
+
+            Shell.info('Updating changelog ' \
+                       "in #{config.changelog_path}.")
+
+            Files.rewrite(config.changelog_path,
+                          Changelog::UpdateForMinor.new(config,
+                                                        previous_stable_branch: stable_branch,
+                                                        homepage: Gemspec.homepage))
+          end
         end
       end
     end

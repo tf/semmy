@@ -66,6 +66,58 @@ module Semmy
       end
     end
 
+    UpdateForMinor = Struct.new(:config, :options) do
+      def call(contents)
+        replace_starting_at(version_line_matcher,
+                            contents,
+                            unreleased_section)
+      end
+
+      private
+
+      def unreleased_section
+        <<-END.unindent
+          #{config.changelog_unrelased_section_heading}
+
+          #{compare_link_for_master}
+
+          #{config.changelog_unrelased_section_blank_slate}
+
+          #{link_to_changelog_on_previous_minor_stable_branch}
+        END
+      end
+
+      def compare_link_for_master
+        Changelog.compare_link(config,
+                               homepage: options[:homepage],
+                               old_version_tag: options[:previous_stable_branch],
+                               new_version_tag: 'master')
+      end
+
+      def link_to_changelog_on_previous_minor_stable_branch
+        config.changelog_previous_changes_link % {
+          branch: options[:previous_stable_branch],
+          url: Changelog.file_url(config,
+                                  homepage: options[:homepage],
+                                  branch: options[:previous_stable_branch])
+        }
+      end
+
+      def version_line_matcher
+        Regexp.new(config.changelog_version_section_heading % {
+                     version: '([0-9.]+)'
+                   })
+      end
+
+      def replace_starting_at(line_matcher, text, inserted_text)
+        unless text =~ line_matcher
+          fail(InsertPointNotFound, 'Insert point not found.')
+        end
+
+        [text.split(line_matcher).first, inserted_text].join
+      end
+    end
+
     InsertUnreleasedSection = Struct.new(:config, :options) do
       def call(contents)
         insert_before(version_line_matcher,
@@ -122,12 +174,20 @@ module Semmy
     end
 
     def compare_url(config, interpolations)
-      config.changelog_compare_url % interpolations
-        .merge(repository: repository_url(config,
-                                          interpolations[:homepage]))
+      config.compare_url % url_interpolations(config, interpolations)
+    end
+
+    def file_url(config, interpolations)
+      config.file_url % url_interpolations(config, interpolations)
+        .merge(path: config.changelog_path)
     end
 
     private
+
+    def url_interpolations(config, interpolations)
+      interpolations.merge(repository: repository_url(config,
+                                                      interpolations[:homepage]))
+    end
 
     def repository_url(config, homepage)
       if config.github_repository

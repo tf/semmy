@@ -59,5 +59,24 @@ module Semmy
 
       components.join('.')
     end
+
+    def previous_stable_branch_name(version, stable_branch_name_pattern)
+      stable_branch_name_pattern % previous_minor_version_components(version)
+    end
+
+    private
+
+    def previous_minor_version_components(version)
+      components = version.split('.').map(&:to_i)
+
+      if components[1].zero?
+        fail(NoPreviousMinor, "Cannot get previous minor version of #{version}.")
+      end
+
+      {
+        major: components[0],
+        minor: components[1] - 1
+      }
+    end
   end
 end
