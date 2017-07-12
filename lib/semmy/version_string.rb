@@ -36,6 +36,10 @@ module Semmy
       version.split('.')[0..1].join('.')
     end
 
+    def patch_level?(version)
+      components(version)[:patch].to_i > 0
+    end
+
     def components(version)
       components = version.split('.')
 

@@ -42,7 +42,7 @@ module Semmy
 
       def version_heading
         config.changelog_version_section_heading % {
-          version: options[:new_version]
+          version: version
         }
       end
 
@@ -53,16 +53,20 @@ module Semmy
       def compare_link_for_versions
         Changelog.compare_link(config,
                                homepage: options[:homepage],
-                               old_version_tag: old_version_tag,
-                               new_version_tag: new_version_tag)
+                               old_version_tag: old_ref,
+                               new_version_tag: Changelog.version_tag(version))
       end
 
-      def old_version_tag
-        Changelog.version_tag(options[:old_version])
+      def old_ref
+        if VersionString.patch_level?(version)
+          Changelog.version_tag(VersionString.previous_version(version))
+        else
+          VersionString.previous_stable_branch_name(version, config.stable_branch_name)
+        end
       end
 
-      def new_version_tag
-        Changelog.version_tag(options[:new_version])
+      def version
+        options[:version]
       end
     end
 
@@ -90,17 +94,22 @@ module Semmy
       def compare_link_for_master
         Changelog.compare_link(config,
                                homepage: options[:homepage],
-                               old_version_tag: options[:previous_stable_branch],
+                               old_version_tag: previous_stable_branch_name,
                                new_version_tag: 'master')
       end
 
       def link_to_changelog_on_previous_minor_stable_branch
         config.changelog_previous_changes_link % {
-          branch: options[:previous_stable_branch],
+          branch: previous_stable_branch_name,
           url: Changelog.file_url(config,
                                   homepage: options[:homepage],
-                                  branch: options[:previous_stable_branch])
+                                  branch: previous_stable_branch_name)
         }
+      end
+
+      def previous_stable_branch_name
+        VersionString.previous_stable_branch_name(options[:version],
+                                                  config.stable_branch_name)
       end
 
       def version_line_matcher

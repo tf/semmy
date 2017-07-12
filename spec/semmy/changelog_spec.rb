@@ -26,8 +26,7 @@ module Semmy
         result = Changelog::CloseSection.new(config,
                                              homepage: 'https://github.com/user/my_gem',
                                              date: Date.new(2016, 1, 2),
-                                             old_version: '1.1.0',
-                                             new_version: '1.2.0').call(contents)
+                                             version: '1.2.0').call(contents)
 
         expect(result).to eq(<<-END.unindent)
           # Changelog
@@ -36,7 +35,7 @@ module Semmy
 
           2016-01-02
 
-          [Compare changes](https://github.com/user/my_gem/compare/v1.1.0...v1.2.0)
+          [Compare changes](https://github.com/user/my_gem/compare/1-1-stable...v1.2.0)
 
           - Something new
         END
@@ -48,7 +47,7 @@ module Semmy
 
           ## Changes on master
 
-          [Compare changes](https://github.com/user/my_gem/compare/v1.1.0...master)
+          [Compare changes](https://github.com/user/my_gem/compare/1-1-stable...master)
 
           - Something new
         END
@@ -56,8 +55,7 @@ module Semmy
         result = Changelog::CloseSection.new(config,
                                              homepage: 'https://github.com/user/my_gem',
                                              date: Date.new(2016, 1, 2),
-                                             old_version: '1.1.0',
-                                             new_version: '1.2.0').call(contents)
+                                             version: '1.2.0').call(contents)
 
         expect(result).to eq(<<-END.unindent)
           # Changelog
@@ -66,9 +64,44 @@ module Semmy
 
           2016-01-02
 
-          [Compare changes](https://github.com/user/my_gem/compare/v1.1.0...v1.2.0)
+          [Compare changes](https://github.com/user/my_gem/compare/1-1-stable...v1.2.0)
 
           - Something new
+        END
+      end
+
+      it 'closes patch level section with compare link for previous patch level version' do
+        contents = <<-END.unindent
+          # Changelog
+
+          ## Changes on master
+
+          - Bug fix
+
+          ## Version 1.2.0
+
+          - Old news
+        END
+
+        result = Changelog::CloseSection.new(config,
+                                             homepage: 'https://github.com/user/my_gem',
+                                             date: Date.new(2016, 1, 2),
+                                             version: '1.2.1').call(contents)
+
+        expect(result).to eq(<<-END.unindent)
+          # Changelog
+
+          ## Version 1.2.1
+
+          2016-01-02
+
+          [Compare changes](https://github.com/user/my_gem/compare/v1.2.0...v1.2.1)
+
+          - Bug fix
+
+          ## Version 1.2.0
+
+          - Old news
         END
       end
 
@@ -85,8 +118,7 @@ module Semmy
           Changelog::CloseSection.new(config,
                                       homepage: 'https://github.com/user/my_gem',
                                       date: Date.new(2016, 1, 2),
-                                      old_version: '1.1.0',
-                                      new_version: '1.2.0').call(contents)
+                                      version: '1.2.0').call(contents)
         }.to raise_error(Changelog::InsertPointNotFound)
       end
     end
@@ -110,7 +142,7 @@ module Semmy
 
         result = Changelog::UpdateForMinor
           .new(config,
-               previous_stable_branch: '1-2-stable',
+               version: '1.3.0',
                homepage: 'https://github.com/user/my_gem').call(contents)
 
         expect(result).to eq(<<-END.unindent)
@@ -140,7 +172,7 @@ module Semmy
         expect {
           Changelog::UpdateForMinor
             .new(config,
-                 previous_stable_branch: '1-2-stable',
+                 version: '1.3.0',
                  homepage: 'https://github.com/user/my_gem')
             .call(contents)
         }.to raise_error(Changelog::InsertPointNotFound)

@@ -84,6 +84,32 @@ module Semmy
       end
     end
 
+    describe '.patch_level?' do
+      it 'returns true for patch level version' do
+        version = '2.3.1'
+
+        result = VersionString.patch_level?(version)
+
+        expect(result).to eq(true)
+      end
+
+      it 'returns false for minor version' do
+        version = '2.3.0'
+
+        result = VersionString.patch_level?(version)
+
+        expect(result).to eq(false)
+      end
+
+      it 'returns false for major version' do
+        version = '2.0.0'
+
+        result = VersionString.patch_level?(version)
+
+        expect(result).to eq(false)
+      end
+    end
+
     describe '.previous_stable_branch_name' do
       let(:stable_branch_name_pattern) { '%{major}-%{minor}-stable' }
 
