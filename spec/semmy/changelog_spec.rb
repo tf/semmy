@@ -9,7 +9,7 @@ module Semmy
         c.file_url = '%{homepage}/blob/%{branch}/%{path}'
         c.changelog_unrelased_section_heading = '## Changes on master'
         c.changelog_unrelased_section_blank_slate = 'None so far.'
-        c.changelog_previous_changes_link = 'See [%{branch} branch](%{url}) for previous changes.'
+        c.changelog_previous_changes_link = "See\n[%{branch} branch](%{url})\nfor previous changes."
       end
     end
 
@@ -156,7 +156,9 @@ module Semmy
 
           None so far.
 
-          See [1-2-stable branch](https://github.com/user/my_gem/blob/1-2-stable/CHANGELOG.md) for previous changes.
+          See
+          [1-2-stable branch](https://github.com/user/my_gem/blob/1-2-stable/CHANGELOG.md)
+          for previous changes.
         END
       end
 

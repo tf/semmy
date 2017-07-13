@@ -80,15 +80,26 @@ module Semmy
       private
 
       def unreleased_section
-        <<-END.unindent
-          #{config.changelog_unrelased_section_heading}
-
-          #{compare_link_for_master}
-
-          #{config.changelog_unrelased_section_blank_slate}
-
-          #{link_to_changelog_on_previous_minor_stable_branch}
-        END
+        # Once Ruby < 2.3 support is dropped, this can be rewritten
+        # as:
+        #
+        #     <<~END
+        #       #{config.changelog_unreleased_section_heading}
+        #
+        #       #{compare_link_for_master}
+        #
+        #       #{config.changelog_unreleased_section_blank_slate}
+        #
+        #       #{link_to_changelog_on_previous_minor_stable_branch}
+        #     END
+        #
+        # `unindent` cannot handle line breaks in interpolated values correctly.
+        [
+          config.changelog_unrelased_section_heading,
+          compare_link_for_master,
+          config.changelog_unrelased_section_blank_slate,
+          link_to_changelog_on_previous_minor_stable_branch
+        ].join("\n\n") << "\n"
       end
 
       def compare_link_for_master
