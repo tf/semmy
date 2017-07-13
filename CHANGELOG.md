@@ -1,10 +1,14 @@
 # CHANGELOG
 
-### Changes on `master`
+### Version 0.4.0
 
-[Compare changes](https://github.com/tf/semmy/compare/v0.3.0...master)
+2017-07-13
 
-None so far.
+[Compare changes](https://github.com/tf/semmy/compare/0-3-stable...v0.4.0)
+
+- Only keep sections for current minor version in changelog and link
+  to previous stable branch.
+- Compare minor versions to previous stable branch.
 
 ### Version 0.3.0
 
