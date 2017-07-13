@@ -27,6 +27,15 @@ module Semmy
                                                         homepage: Gemspec.homepage))
           end
 
+          task 'replace_minor_stable_branch_with_major_stable_branch' do
+            Shell.info('Updating changelog ' \
+                       "in #{config.changelog_path}.")
+
+            Files.rewrite(config.changelog_path,
+                          Changelog::ReplaceMinorStableBranchWithMajorStableBranch
+                            .new(config, version: Project.version))
+          end
+
           task 'insert_unreleased_section' do
             Shell.info('Inserting unreleased changes header ' \
                        "in #{config.changelog_path}.")

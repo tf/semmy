@@ -151,6 +151,23 @@ module Semmy
       end
     end
 
+    ReplaceMinorStableBranchWithMajorStableBranch = Struct.new(:config, :options) do
+      def call(contents)
+        contents.gsub(minor_stable_branch(options[:version]),
+                      major_stable_branch(options[:version]))
+      end
+
+      private
+
+      def minor_stable_branch(version)
+        VersionString.previous_stable_branch_name(version, config.stable_branch_name)
+      end
+
+      def major_stable_branch(version)
+        config.stable_branch_name % VersionString.components(version).merge(minor: 'x')
+      end
+    end
+
     def version_tag(version)
       "v#{version}"
     end

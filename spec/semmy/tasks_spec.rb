@@ -47,6 +47,28 @@ module Semmy
           Rake.application['release:prepare'].invoke
         }.not_to raise_error
       end
+
+      it 'passes on master for major version' do
+        Fixtures.gemspec(name: 'my_gem', module: 'MyGem')
+        Fixtures.version_file('lib/my_gem/version.rb',
+                              module: 'MyGem',
+                              version: '2.0.0.dev')
+        Fixtures.file('CHANGELOG.md', <<-END)
+          # Changelog
+
+          ### Unreleased Changes
+        END
+
+        git = Fixtures.git_workspace
+        git.add(all: true)
+        git.commit('Some commit')
+
+        Tasks.install
+
+        expect {
+          Rake.application['release:prepare'].invoke
+        }.not_to raise_error
+      end
     end
 
     describe 'release:after task invoked after release task' do
@@ -73,7 +95,7 @@ module Semmy
       end
     end
 
-    describe 'begin_patch_level' do
+    describe 'bump:patch' do
       it 'passes on stable branch' do
         Fixtures.gemspec(name: 'my_gem', module: 'MyGem')
         Fixtures.version_file('lib/my_gem/version.rb',
@@ -93,7 +115,32 @@ module Semmy
         Tasks.install
 
         expect {
-          Rake.application['begin_patch_level'].invoke
+          Rake.application['bump:patch'].invoke
+        }.not_to raise_error
+      end
+    end
+
+    describe 'bump:major' do
+      it 'passes on master' do
+        Fixtures.gemspec(name: 'my_gem', module: 'MyGem')
+        Fixtures.version_file('lib/my_gem/version.rb',
+                              module: 'MyGem',
+                              version: '1.5.0.dev')
+        Fixtures.file('CHANGELOG.md', <<-END)
+          # Changelog
+
+          ### Unreleased Changes
+        END
+
+        git = Fixtures.git_workspace
+        git.add(all: true)
+        git.commit('Initial commit')
+        git.branch('master').checkout
+
+        Tasks.install
+
+        expect {
+          Rake.application['bump:major'].invoke
         }.not_to raise_error
       end
     end

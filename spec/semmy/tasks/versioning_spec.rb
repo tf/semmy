@@ -19,6 +19,23 @@ module Semmy
         end
       end
 
+      describe 'bump_major task' do
+        it 'bumps major and appends development version suffix' do
+          Fixtures.gemspec(name: 'my_gem', module: 'MyGem')
+          version_file = Fixtures.version_file('lib/my_gem/version.rb',
+                                               module: 'MyGem',
+                                               version: '1.2.0.dev')
+
+          Versioning.new do |config|
+            config.development_version_suffix = 'dev'
+          end
+
+          Rake.application['versioning:bump_major'].invoke
+
+          expect(version_file.read).to match(/VERSION = '2.0.0.dev'/)
+        end
+      end
+
       describe 'bump_minor task' do
         it 'bumps minor and appends development version suffix' do
           Fixtures.gemspec(name: 'my_gem', module: 'MyGem')

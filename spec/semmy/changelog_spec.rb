@@ -230,5 +230,63 @@ module Semmy
         }.to raise_error(Changelog::InsertPointNotFound)
       end
     end
+
+    describe 'Changelog::ReplaceMinorStableBranchWithMajorStableBranch#call' do
+      it 'replaces minor stable branch names with major stable branch names' \
+         'that includes link to previous stable branch' do
+        contents = <<-END.unindent
+          # Changelog
+
+          Some text.
+
+          ## Unreleased Changes
+
+          [Compare changes](https://github.com/user/my_gem/compare/1-2-stable...master)
+
+          None so far.
+
+          See
+          [1-2-stable branch](https://github.com/user/my_gem/blob/1-2-stable/CHANGELOG.md)
+          for previous changes.
+        END
+
+        result = Changelog::ReplaceMinorStableBranchWithMajorStableBranch
+          .new(config, version: '1.3.0').call(contents)
+
+        expect(result).to eq(<<-END.unindent)
+          # Changelog
+
+          Some text.
+
+          ## Unreleased Changes
+
+          [Compare changes](https://github.com/user/my_gem/compare/1-x-stable...master)
+
+          None so far.
+
+          See
+          [1-x-stable branch](https://github.com/user/my_gem/blob/1-x-stable/CHANGELOG.md)
+          for previous changes.
+        END
+      end
+
+      it 'fails if version section heading is not found' do
+        contents = <<-END.unindent
+          # Changelog
+
+          ## Something else
+
+          - Something new
+        END
+
+        expect {
+          Changelog::UpdateForMinor
+            .new(config,
+                 version: '1.3.0',
+                 homepage: 'https://github.com/user/my_gem')
+            .call(contents)
+        }.to raise_error(Changelog::InsertPointNotFound)
+      end
+    end
   end
 end

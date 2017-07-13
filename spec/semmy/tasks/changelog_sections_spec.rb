@@ -141,6 +141,47 @@ module Semmy
           expect(changelog.read).to include('## Version 2.2.0')
         end
       end
+
+      describe 'replace_minor_stable_branch_with_major_stable_branch' do
+        before do
+          Fixtures.gemspec(name: 'my_gem', module: 'MyGem')
+          Fixtures.version_file('lib/my_gem/version.rb',
+                                module: 'MyGem',
+                                version: '2.4.0.dev')
+
+          ChangelogSections.new do |config|
+            config.stable_branch_name = '%{major}-%{minor}-stable'
+          end
+        end
+
+        let!(:changelog) do
+          Fixtures.file('CHANGELOG.md', <<-END)
+            # Changelog
+
+            Some text.
+
+            ## Unreleased Changes
+
+            [Compare changes](https://github.com/user/my_gem/compare/2-3-stable...master)
+
+            None so far.
+
+            See
+            [2-3-stable branch](https://github.com/user/my_gem/blob/2-3-stable/CHANGELOG.md)
+            for previous changes.
+          END
+        end
+
+        it 'replaces table branch name' do
+          Rake.application['changelog:replace_minor_stable_branch_with_major_stable_branch'].invoke
+
+          result = changelog.read
+
+          expect(result).to include('compare/2-x-stable...master')
+          expect(result).to include('[2-x-stable branch]')
+          expect(result).to include('my_gem/blob/2-x-stable/CHANGELOG.md')
+        end
+      end
     end
   end
 end

@@ -116,7 +116,7 @@ check out the stable branch and cherry pick commits:
 
 Then run:
 
-    $ rake begin_patch_level
+    $ rake bump:patch
 
 This task:
 
@@ -143,6 +143,23 @@ graph:
     | * Important bug fix
     |/
     * (v1.2.0) Prepare 1.2.0 release
+
+### Releasing a Major Version
+
+If breaking changes have been merged to master, run:
+
+    $ rake bump:major
+
+Assuming the version was `1.2.0.dev` before, This bumps the major
+version in the version file to `2.0.0.dev` and updates the changelog
+to reference `1-x-stable` for comparison.
+
+The branch `1-x-stable` has to be created and managed manually. It
+should always point to the same commit as the lastest minor version
+stable branch of the major version.
+
+The rest of the release can be performed like a normal minor version
+release.
 
 ## Development
 

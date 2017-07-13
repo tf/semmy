@@ -67,9 +67,14 @@ module Semmy
         Rake.application['release:after'].invoke
       end
 
-      task 'begin_patch_level' => [
+      task 'bump:patch' => [
         'semmy:versioning:bump_patch_level',
         'semmy:changelog:insert_unreleased_section'
+      ]
+
+      task 'bump:major' => [
+        'semmy:changelog:replace_minor_stable_branch_with_major_stable_branch',
+        'semmy:versioning:bump_major'
       ]
     end
   end
