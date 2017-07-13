@@ -1,11 +1,28 @@
 # CHANGELOG
 
-### Unreleased Changes
+### Version 1.0.0
 
-[Compare changes](https://github.com/tf/semmy/compare/0-4-stable...master)
+2017-07-13
 
-None so far.
+[Compare changes](https://github.com/tf/semmy/compare/0-x-stable...v1.0.0)
+
+##### Breaking Changes
+
+- A typo in the name of the `changelog_unreleased_section_heading` and
+  `changelog_unreleased_section_blank_slate` options was fixed.
+- The default value of `changelog_unreleased_section_heading` changed
+  to "Unreleased Changes". You need to update the header in your
+  changelog or manually set the previous value via the configuration option.
+
+##### New Features
+
+- Add `bump:patch` task which begins a patch level release.
+- Add `bump:mahor` task which updates the major version.
+
+##### Bug Fixes
+
+- Fix indentation of generated unreleased changes section.
 
 See
-[0-4-stable branch](https://github.com/tf/semmy/blob/0-4-stable/CHANGELOG.md)
+[0-x-stable branch](https://github.com/tf/semmy/blob/0-x-stable/CHANGELOG.md)
 for previous changes.
