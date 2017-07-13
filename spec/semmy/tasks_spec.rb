@@ -11,7 +11,7 @@ module Semmy
         Fixtures.file('CHANGELOG.md', <<-END)
           # Changelog
 
-          ### Changes on `master`
+          ### Unreleased Changes
         END
 
         git = Fixtures.git_workspace
@@ -33,7 +33,7 @@ module Semmy
         Fixtures.file('CHANGELOG.md', <<-END)
           # Changelog
 
-          ### Changes on `master`
+          ### Unreleased Changes
         END
 
         git = Fixtures.git_workspace

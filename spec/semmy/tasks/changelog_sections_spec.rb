@@ -12,11 +12,11 @@ module Semmy
           changelog = Fixtures.file('CHANGELOG.md', <<-END)
             # Changelog
 
-            ## Changes on master
+            ## Unreleased Changes
           END
 
           ChangelogSections.new do |config|
-            config.changelog_unrelased_section_heading = '## Changes on master'
+            config.changelog_unreleased_section_heading = '## Unreleased Changes'
           end
 
           Rake.application['changelog:close_section'].invoke
@@ -34,11 +34,11 @@ module Semmy
           changelog = Fixtures.file('CHANGELOG.md', <<-END)
             # Changelog
 
-            ## Changes on master
+            ## Unreleased Changes
           END
 
           ChangelogSections.new do |config|
-            config.changelog_unrelased_section_heading = '## Changes on master'
+            config.changelog_unreleased_section_heading = '## Unreleased Changes'
             config.stable_branch_name = '%{major}-%{minor}-stable'
           end
 
@@ -58,11 +58,11 @@ module Semmy
           changelog = Fixtures.file('CHANGELOG.md', <<-END)
             # Changelog
 
-            ## Changes on master
+            ## Unreleased Changes
           END
 
           ChangelogSections.new do |config|
-            config.changelog_unrelased_section_heading = '## Changes on master'
+            config.changelog_unreleased_section_heading = '## Unreleased Changes'
             config.github_repository = 'me/my_gem'
             config.stable_branch_name = '%{major}-%{minor}-stable'
           end
@@ -83,7 +83,7 @@ module Semmy
 
           ChangelogSections.new do |config|
             config.changelog_version_section_heading = '## Version %{version}'
-            config.changelog_unrelased_section_heading = '## Changes on master'
+            config.changelog_unreleased_section_heading = '## Unreleased Changes'
           end
         end
 
@@ -98,7 +98,7 @@ module Semmy
         it 'inserts unreleased changes section' do
           Rake.application['changelog:update_for_minor'].invoke
 
-          expect(changelog.read).to include('## Changes on master')
+          expect(changelog.read).to include('## Unreleased Changes')
         end
 
         it 'removes previous version section' do

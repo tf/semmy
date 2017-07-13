@@ -1,6 +1,6 @@
 # CHANGELOG
 
-### Changes on `master`
+### Unreleased Changes
 
 [Compare changes](https://github.com/tf/semmy/compare/0-4-stable...master)
 

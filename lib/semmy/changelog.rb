@@ -22,7 +22,7 @@ module Semmy
       private
 
       def unreleased_section_matcher
-        /#{config.changelog_unrelased_section_heading}(\s*#{compare_link_matcher})?/
+        /#{config.changelog_unreleased_section_heading}(\s*#{compare_link_matcher})?/
       end
 
       def compare_link_matcher
@@ -95,9 +95,9 @@ module Semmy
         #
         # `unindent` cannot handle line breaks in interpolated values correctly.
         [
-          config.changelog_unrelased_section_heading,
+          config.changelog_unreleased_section_heading,
           compare_link_for_master,
-          config.changelog_unrelased_section_blank_slate,
+          config.changelog_unreleased_section_blank_slate,
           link_to_changelog_on_previous_minor_stable_branch
         ].join("\n\n") << "\n"
       end

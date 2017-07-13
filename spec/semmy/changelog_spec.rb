@@ -7,8 +7,8 @@ module Semmy
         c.changelog_version_section_heading = '## Version %{version}'
         c.compare_url = '%{homepage}/compare/%{old_version_tag}...%{new_version_tag}'
         c.file_url = '%{homepage}/blob/%{branch}/%{path}'
-        c.changelog_unrelased_section_heading = '## Changes on master'
-        c.changelog_unrelased_section_blank_slate = 'None so far.'
+        c.changelog_unreleased_section_heading = '## Unreleased Changes'
+        c.changelog_unreleased_section_blank_slate = 'None so far.'
         c.changelog_previous_changes_link = "See\n[%{branch} branch](%{url})\nfor previous changes."
       end
     end
@@ -18,7 +18,7 @@ module Semmy
         contents = <<-END.unindent
           # Changelog
 
-          ## Changes on master
+          ## Unreleased Changes
 
           - Something new
         END
@@ -45,7 +45,7 @@ module Semmy
         contents = <<-END.unindent
           # Changelog
 
-          ## Changes on master
+          ## Unreleased Changes
 
           [Compare changes](https://github.com/user/my_gem/compare/1-1-stable...master)
 
@@ -74,7 +74,7 @@ module Semmy
         contents = <<-END.unindent
           # Changelog
 
-          ## Changes on master
+          ## Unreleased Changes
 
           - Bug fix
 
@@ -150,7 +150,7 @@ module Semmy
 
           Some text.
 
-          ## Changes on master
+          ## Unreleased Changes
 
           [Compare changes](https://github.com/user/my_gem/compare/1-2-stable...master)
 

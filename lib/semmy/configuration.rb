@@ -14,8 +14,8 @@ module Semmy
 
     attr_accessor :changelog_path
     attr_accessor :changelog_version_section_heading
-    attr_accessor :changelog_unrelased_section_heading
-    attr_accessor :changelog_unrelased_section_blank_slate
+    attr_accessor :changelog_unreleased_section_heading
+    attr_accessor :changelog_unreleased_section_blank_slate
     attr_accessor :changelog_previous_changes_link
 
     attr_accessor :source_files_with_docs_tags
@@ -34,8 +34,8 @@ module Semmy
 
       @changelog_path = 'CHANGELOG.md'
       @changelog_version_section_heading = '### Version %{version}'
-      @changelog_unrelased_section_heading = '### Changes on `master`'
-      @changelog_unrelased_section_blank_slate = 'None so far.'
+      @changelog_unreleased_section_heading = '### Unreleased Changes'
+      @changelog_unreleased_section_blank_slate = 'None so far.'
       @changelog_previous_changes_link = "See\n[%{branch} branch](%{url})\nfor previous changes."
 
       @source_files_with_docs_tags = '{app,lib}/**/*.{js,rb,scss}'
