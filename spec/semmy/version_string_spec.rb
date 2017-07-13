@@ -29,11 +29,37 @@ module Semmy
         expect(result).to eq('2.1.0.dev')
       end
 
+      it 'resets patch level version' do
+        version = '2.4.3'
+
+        result = VersionString.bump_minor(version, 'dev')
+
+        expect(result).to eq('2.5.0.dev')
+      end
+
       it 'fails if there already is a suffix' do
         version = '2.0.0.alpha'
 
         expect {
           VersionString.bump_minor(version, 'dev')
+        }.to raise_error(VersionString::UnexpectedSuffix)
+      end
+    end
+
+    describe '.bump_patch_level' do
+      it 'increments patch level version' do
+        version = '2.0.0'
+
+        result = VersionString.bump_patch_level(version)
+
+        expect(result).to eq('2.0.1')
+      end
+
+      it 'fails if there is a suffix' do
+        version = '2.0.0.alpha'
+
+        expect {
+          VersionString.bump_patch_level(version)
         }.to raise_error(VersionString::UnexpectedSuffix)
       end
     end

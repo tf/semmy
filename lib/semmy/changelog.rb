@@ -72,7 +72,7 @@ module Semmy
 
     UpdateForMinor = Struct.new(:config, :options) do
       def call(contents)
-        replace_starting_at(version_line_matcher,
+        replace_starting_at(Changelog.version_line_matcher(config),
                             contents,
                             unreleased_section)
       end
@@ -123,12 +123,6 @@ module Semmy
                                                   config.stable_branch_name)
       end
 
-      def version_line_matcher
-        Regexp.new(config.changelog_version_section_heading % {
-                     version: '([0-9.]+)'
-                   })
-      end
-
       def replace_starting_at(line_matcher, text, inserted_text)
         unless text =~ line_matcher
           fail(InsertPointNotFound, 'Insert point not found.')
@@ -138,8 +132,33 @@ module Semmy
       end
     end
 
+    InsertUnreleasedSection = Struct.new(:config) do
+      def call(contents)
+        insert_before(Changelog.version_line_matcher(config),
+                      contents,
+                      config.changelog_unreleased_section_heading << "\n")
+      end
+
+      private
+
+      def insert_before(line_matcher, text, inserted_text)
+        text.dup.tap do |result|
+          unless (result.sub!(line_matcher, inserted_text + "\n\\0"))
+            fail(InsertPointNotFound,
+                 'Insert point not found.')
+          end
+        end
+      end
+    end
+
     def version_tag(version)
       "v#{version}"
+    end
+
+    def version_line_matcher(config)
+      Regexp.new(config.changelog_version_section_heading % {
+                   version: '([0-9.]+)'
+                 })
     end
 
     def compare_link(config, interpolations)

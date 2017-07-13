@@ -21,6 +21,15 @@ module Semmy
 
             rewrite_gemspec_version(new_version)
           end
+
+          task 'bump_patch_level' do
+            new_version = VersionString
+              .bump_patch_level(Project.version)
+
+            Shell.info("Bumping version to #{new_version}.")
+
+            rewrite_gemspec_version(new_version)
+          end
         end
       end
 

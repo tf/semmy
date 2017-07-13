@@ -107,6 +107,40 @@ module Semmy
           expect(changelog.read).not_to include('## Version 2.2.0')
         end
       end
+
+      describe 'insert_unreleased_section' do
+        before do
+          Fixtures.gemspec(name: 'my_gem', module: 'MyGem')
+          Fixtures.version_file('lib/my_gem/version.rb',
+                                module: 'MyGem',
+                                version: '2.3.0')
+
+          ChangelogSections.new do |config|
+            config.changelog_version_section_heading = '## Version %{version}'
+            config.changelog_unreleased_section_heading = '## Unreleased Changes'
+          end
+        end
+
+        let!(:changelog) do
+          Fixtures.file('CHANGELOG.md', <<-END)
+            # Changelog
+
+            ## Version 2.2.0
+          END
+        end
+
+        it 'inserts unreleased changes section' do
+          Rake.application['changelog:insert_unreleased_section'].invoke
+
+          expect(changelog.read).to include('## Unreleased Changes')
+        end
+
+        it 'keeps previous version section' do
+          Rake.application['changelog:insert_unreleased_section'].invoke
+
+          expect(changelog.read).to include('## Version 2.2.0')
+        end
+      end
     end
   end
 end

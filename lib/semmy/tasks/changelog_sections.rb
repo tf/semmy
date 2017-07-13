@@ -26,6 +26,14 @@ module Semmy
                                                         version: Project.version,
                                                         homepage: Gemspec.homepage))
           end
+
+          task 'insert_unreleased_section' do
+            Shell.info('Inserting unreleased changes header ' \
+                       "in #{config.changelog_path}.")
+
+            Files.rewrite(config.changelog_path,
+                          Changelog::InsertUnreleasedSection.new(config))
+          end
         end
       end
     end

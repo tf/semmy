@@ -19,17 +19,11 @@ module Semmy
     end
 
     def bump_minor(version, suffix)
-      components = version.split('.')
+      [bump(1, version), suffix].join('.')
+    end
 
-      unless components.last =~ /^[0-9]+$/
-        fail(UnexpectedSuffix, "Expected a version without suffix, found #{version}.")
-      end
-
-      components.map!(&:to_i)
-      components[1] += 1
-      components << suffix
-
-      components.join('.')
+    def bump_patch_level(version)
+      bump(2, version)
     end
 
     def minor_only(version)
@@ -69,6 +63,22 @@ module Semmy
     end
 
     private
+
+    def bump(component_index, version)
+      components = version.split('.')
+
+      unless components.last =~ /^[0-9]+$/
+        fail(UnexpectedSuffix, "Expected a version without suffix, found #{version}.")
+      end
+
+      components.map!(&:to_i)
+
+      [
+        components[0...component_index],
+        components[component_index] + 1,
+        [0] * (2 - component_index)
+      ].flatten.join('.')
+    end
 
     def previous_minor_version_components(version)
       components = version.split('.').map(&:to_i)

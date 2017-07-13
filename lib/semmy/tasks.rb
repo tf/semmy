@@ -66,6 +66,11 @@ module Semmy
       task 'release' do
         Rake.application['release:after'].invoke
       end
+
+      task 'begin_patch_level' => [
+        'semmy:versioning:bump_patch_level',
+        'semmy:changelog:insert_unreleased_section'
+      ]
     end
   end
 end

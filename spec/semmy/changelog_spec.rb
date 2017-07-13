@@ -180,5 +180,55 @@ module Semmy
         }.to raise_error(Changelog::InsertPointNotFound)
       end
     end
+
+    describe 'Changelog::InsertUnreleasedSection#call' do
+      it 'inserts unreleased section header' do
+        contents = <<-END.unindent
+          # Changelog
+
+          Some text.
+
+          ## Version 1.2.0
+
+          - Something new
+
+          ## Version 1.1.0
+
+          - Something else
+        END
+
+        result = Changelog::InsertUnreleasedSection.new(config).call(contents)
+
+        expect(result).to eq(<<-END.unindent)
+          # Changelog
+
+          Some text.
+
+          ## Unreleased Changes
+
+          ## Version 1.2.0
+
+          - Something new
+
+          ## Version 1.1.0
+
+          - Something else
+        END
+      end
+
+      it 'fails if version section heading is not found' do
+        contents = <<-END.unindent
+          # Changelog
+
+          ## Something else
+
+          - Something new
+        END
+
+        expect {
+          Changelog::InsertUnreleasedSection.new(config).call(contents)
+        }.to raise_error(Changelog::InsertPointNotFound)
+      end
+    end
   end
 end
