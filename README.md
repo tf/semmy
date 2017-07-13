@@ -9,50 +9,6 @@
 An opinionated set of rake tasks to maintain gems following semantic
 versioning principles.
 
-## Installation
-
-Add development dependency to your gemspec:
-
-    # your.gemspec
-    s.add_development_dependency 'semmy', '~> 0.2'
-
-Install gems:
-
-    $ bundle
-
-Add the tasks to your Rakefile:
-
-    # Rakefile
-    require 'semmy'
-
-    Semmy::Tasks.install
-
-## Usage
-
-Semmy defines a new task to prepare a release:
-
-    $ rake release:prepare
-
-This task:
-
-* Removes the `dev` version suffix from the version file
-* Rewrites doc tags
-* Closes the section of the new version in the changelog.
-* Commits the changes
-
-It is expected that a `release` task exists. Normally this tasks is
-provided by Bundler.
-
-    $ rake release
-
-Semmy registers additional actions which shall be
-executed right after the release:
-
-* Creates a stable branch
-* Bumps the version to the next minor version with `alpha` version
-  suffix.
-* Inserts an "Changes on master" section in the changelog.
-
 ## Assumptions
 
 ### Git Branches and Tags
@@ -68,8 +24,8 @@ branches.
 ### Version Suffix
 
 The version in the gem's version file is increased in a separate
-commit right after release. The version always has an `alpha` suffix
-(i.e. `1.1.0.alpha`), which is only removed in the last commit
+commit right after release. The version always has an `dev` suffix
+(i.e. `1.1.0.dev`), which is only removed in the last commit
 preparing the release. That way it is easy to see in a project's
 `Gemfile.lock` whether an unreleased version is used.
 
@@ -93,22 +49,114 @@ and inserting a compare link. Changelog entries for patch level
 versions are only committed on the stable branches since they only
 backport bug fixes from master.
 
-## Example Life Cycle
+## Installation
 
-### Releasing a Minor Version
+Add development dependency to your gemspec:
 
-     1:  * (master) Other important bug fix
-     2:  * Minor bug fix
-     3:  * First new feature
-     4:  * Important bug fix
-     5:  * Begin work on 1.1
-     6:  | * (1-0-stable, v1.0.2) Prepare 1.0.2 release
-     7:  | * Backport of other bug fix
-     8:  | * (v1.0.1) Prepare 1.0.1 release
-     9:  | * Backport of important bug fix
-    10:  |/
-    11:  * (v1.0.0) Prepare 1.0.0 release
+    # your.gemspec
+    s.add_development_dependency 'semmy', '~> 1.0'
+
+Install gems:
+
+    $ bundle
+
+Add the tasks to your Rakefile:
+
+    # Rakefile
+    require 'semmy'
+
+    Semmy::Tasks.install
+
+## Usage
+
+Semmy defines a new task to prepare a release:
+
+    $ rake release:prepare
+
+This task:
+
+* Ensures the gem can be installed.
+* Removes the `dev` version suffix from the version file.
+* Rewrites doc tags.
+* Closes the section of the new version in the changelog.
+* Commits the changes.
+
+It is expected that a `release` task exists. Normally this tasks is
+provided by Bundler.
+
+    $ rake release
+
+Semmy registers additional actions which shall be
+executed right after the release:
+
+* Creates a stable branch.
+* Bumps the version to the next minor version with `alpha` version
+  suffix.
+* Inserts an "Unreleased Changes" section in the changelog.
+
+The resulting commit graph looks like:
+
+    * (master) Bump version to 1.3.0.dev
+    * (v1.2.0, 1-2-stable) Prepare 1.2.0 release
+    * Some new feature
 
 ### Releasing a Patch Level Version
 
+Assume an important bug fix has been added to `master`:
 
+    * (master) Important bug fix
+    * First new feature
+    * Bump version to 1.3.0.dev
+    * (v1.0.0, 1-2-stable) Prepare 1.2.0 release
+
+check out the stable branch and cherry pick commits:
+
+    $ git checkout 1-2-stable
+    $ git cherry-pick master
+
+Then run:
+
+    $ rake begin_patch_level
+
+This task:
+
+* Bumps the version to `1.2.1` in the version file.
+* Inserts an "Unreleased Changes" section in the changelog.
+
+Add items to the new changelog section, then run:
+
+    $ rake release:prepare
+
+This task detects that we are currently on a stable branch and
+performs the following subset of the normal prepare tasks:
+
+* Closes the section of the new version in the changelog.
+* Commits the changes
+
+You can now run `rake release`, leaving you with the following commit
+graph:
+
+    * (master) Important bug fix
+    * First new feature
+    * Bump version to 1.3.0.dev
+    | * (v1.2.1, 1-2-stable) Prepare 1.2.1 release
+    | * Important bug fix
+    |/
+    * (v1.2.0) Prepare 1.2.0 release
+
+## Development
+
+After checking out the repo, run `bin/setup` to install
+dependencies. You can also run `bin/console` for an interactive prompt
+that will allow you to experiment. Run `bin/rspec` to execute the test
+suite.
+
+## Contributing
+
+Bug reports and pull requests are welcome on GitHub at
+https://github.com/tf/semmy.
+
+## License
+
+The gem is available as open source under the terms of the
+[MIT License](http://opensource.org/licenses/MIT).
