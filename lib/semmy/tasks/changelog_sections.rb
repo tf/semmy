@@ -1,3 +1,5 @@
+require 'date'
+
 module Semmy
   module Tasks
     class ChangelogSections < Base
