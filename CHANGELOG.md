@@ -1,5 +1,13 @@
 # CHANGELOG
 
+### Version 1.0.1
+
+2018-12-10
+
+[Compare changes](https://github.com/tf/semmy/compare/v1.0.0...v1.0.1)
+
+- Require date stdlib to prevent error during prepare.
+
 ### Version 1.0.0
 
 2017-07-13
