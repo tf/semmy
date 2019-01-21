@@ -12,7 +12,7 @@ module Semmy
     def command
       "gem build -V #{Gemspec.path} 2>&1 && " \
       "gem install --local #{built_gem_path} 2>&1 && " \
-      "gem uninstall #{Gemspec.gem_name} -v #{Project.version} 2>&1 && " \
+      "gem uninstall -I #{Gemspec.gem_name} -v #{Project.version} 2>&1 && " \
       "rm #{built_gem_path}" \
     end
 

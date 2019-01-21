@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### Unreleased Changes
+
+- Ensure test install of gem during `release:prepare` does not hang
+  waiting for interactive input on uninstall.
+
 ### Version 1.0.1
 
 2018-12-10
