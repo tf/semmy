@@ -1,6 +1,10 @@
 # CHANGELOG
 
-### Unreleased Changes
+### Version 1.0.2
+
+2019-01-21
+
+[Compare changes](https://github.com/tf/semmy/compare/v1.0.1...v1.0.2)
 
 - Ensure test install of gem during `release:prepare` does not hang
   waiting for interactive input on uninstall.
