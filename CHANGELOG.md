@@ -1,8 +1,10 @@
 # CHANGELOG
 
-### Unreleased Changes
+### Version 1.1.0
 
-[Compare changes](https://github.com/tf/semmy/compare/1-0-stable...master)
+2019-01-23
+
+[Compare changes](https://github.com/tf/semmy/compare/1-0-stable...v1.1.0)
 
 - Run same tasks as on `master` when running on major version stable
   branch (e.g. `2-x-stable`).
