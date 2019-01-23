@@ -4,7 +4,10 @@
 
 [Compare changes](https://github.com/tf/semmy/compare/1-0-stable...master)
 
-- Ensure test install of gem during `release:prepare` does not hang
+- Run same tasks as on `master` when running on major version stable
+  branch (e.g. `2-x-stable`).
+
+- Bug fix: Ensure test install of gem during `release:prepare` does not hang
   waiting for interactive input on uninstall.
 
 See

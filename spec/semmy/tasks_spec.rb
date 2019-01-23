@@ -23,6 +23,33 @@ module Semmy
         expect {
           Rake.application['release:prepare'].invoke
         }.not_to raise_error
+
+        expect(git.log.first.message).to match(/Prepare/)
+      end
+
+      it 'passes on major version stable branch master' do
+        Fixtures.gemspec(name: 'my_gem', module: 'MyGem')
+        Fixtures.version_file('lib/my_gem/version.rb',
+                              module: 'MyGem',
+                              version: '1.5.0.dev')
+        Fixtures.file('CHANGELOG.md', <<-END)
+          # Changelog
+
+          ### Unreleased Changes
+        END
+
+        git = Fixtures.git_workspace
+        git.add(all: true)
+        git.commit('Some commit')
+        git.branch('1-x-stable').checkout
+
+        Tasks.install
+
+        expect {
+          Rake.application['release:prepare'].invoke
+        }.not_to raise_error
+
+        expect(git.log.first.message).to match(/Prepare/)
       end
 
       it 'passes on stable branch' do
@@ -68,6 +95,8 @@ module Semmy
         expect {
           Rake.application['release:prepare'].invoke
         }.not_to raise_error
+
+        expect(git.log.first.message).to match(/Prepare/)
       end
     end
 
@@ -92,6 +121,33 @@ module Semmy
         expect {
           Rake.application['release'].invoke
         }.not_to raise_error
+
+        expect(git.log.first.message).to match(/Bump/)
+      end
+
+      it 'passes on major version stable branch' do
+        Fixtures.gemspec(name: 'my_gem', module: 'MyGem')
+        Fixtures.version_file('lib/my_gem/version.rb',
+                              module: 'MyGem',
+                              version: '1.5.0')
+        Fixtures.file('CHANGELOG.md', <<-END)
+          # Changelog
+
+          ### Version 1.5.0
+        END
+
+        git = Fixtures.git_workspace
+        git.add(all: true)
+        git.commit('Prepare 1.5 release')
+        git.branch('1-x-stable').checkout
+
+        Tasks.install
+
+        expect {
+          Rake.application['release'].invoke
+        }.not_to raise_error
+
+        expect(git.log.first.message).to match(/Bump/)
       end
     end
 

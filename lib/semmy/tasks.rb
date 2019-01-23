@@ -42,9 +42,9 @@ module Semmy
 
       desc 'Prepare release'
       task 'release:prepare' => 'semmy:lint' do
-        if Scm.on_master?
+        if Scm.on_master? || Scm.on_major_version_stable?(config.stable_branch_name)
           Rake.application['release:prepare:master'].invoke
-        elsif Scm.on_stable?(config.stable_branch_name)
+        elsif Scm.on_minor_version_stable?(config.stable_branch_name)
           Rake.application['release:prepare:stable'].invoke
         end
       end
@@ -58,7 +58,7 @@ module Semmy
 
       desc 'Prepare repository for development of next verion'
       task 'release:after' do
-        if Scm.on_master?
+        if Scm.on_master? || Scm.on_major_version_stable?(config.stable_branch_name)
           Rake.application['release:after:master'].invoke
         end
       end
