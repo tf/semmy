@@ -4,7 +4,7 @@
 
 [Compare changes](https://github.com/tf/semmy/compare/1-1-stable...master)
 
-None so far.
+- Add config option to automatically push branches after release.
 
 See
 [1-1-stable branch](https://github.com/tf/semmy/blob/1-1-stable/CHANGELOG.md)

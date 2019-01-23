@@ -162,6 +162,18 @@ module Semmy
       end
     end
 
+    describe '.stable_branch_name' do
+      let(:stable_branch_name_pattern) { '%{major}-%{minor}-stable' }
+
+      it 'returns stable branch name for version' do
+        version = '1.2.0'
+
+        result = VersionString.stable_branch_name(version, stable_branch_name_pattern)
+
+        expect(result).to eq('1-2-stable')
+      end
+    end
+
     describe '.previous_stable_branch_name' do
       let(:stable_branch_name_pattern) { '%{major}-%{minor}-stable' }
 

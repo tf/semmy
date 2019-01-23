@@ -49,22 +49,24 @@ module Semmy
         end
       end
 
-      task 'release:after:master' => [
+      task 'release:after:master', [:remote] => [
         'semmy:branches:create_stable',
         'semmy:versioning:bump_minor',
         'semmy:changelog:update_for_minor',
-        'semmy:commit:bump'
+        'semmy:commit:bump',
+        'semmy:branches:push_master',
+        'semmy:branches:push_previous_stable'
       ]
 
       desc 'Prepare repository for development of next verion'
-      task 'release:after' do
+      task 'release:after', [:remote] do |_, args|
         if Scm.on_master? || Scm.on_major_version_stable?(config.stable_branch_name)
-          Rake.application['release:after:master'].invoke
+          Rake.application['release:after:master'].invoke(args[:remote])
         end
       end
 
-      task 'release' do
-        Rake.application['release:after'].invoke
+      task 'release', [:remote] do |_, args|
+        Rake.application['release:after'].invoke(args[:remote])
       end
 
       task 'bump:patch' => [

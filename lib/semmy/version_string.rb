@@ -62,6 +62,10 @@ module Semmy
       components.join('.')
     end
 
+    def stable_branch_name(version, stable_branch_name_pattern)
+      stable_branch_name_pattern % VersionString.components(version)
+    end
+
     def previous_stable_branch_name(version, stable_branch_name_pattern)
       stable_branch_name_pattern % previous_minor_version_components(version)
     end

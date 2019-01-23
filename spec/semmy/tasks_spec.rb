@@ -115,6 +115,32 @@ module Semmy
         git = Fixtures.git_workspace
         git.add(all: true)
         git.commit('Prepare 1.5 release')
+        Fixtures.git_remote_repository('upstream')
+
+        Tasks.install
+
+        expect {
+          Rake.application['release'].invoke('upstream')
+        }.not_to raise_error
+
+        expect(git.log.first.message).to match(/Bump/)
+      end
+
+      it 'passes on master for major version' do
+        Fixtures.gemspec(name: 'my_gem', module: 'MyGem')
+        Fixtures.version_file('lib/my_gem/version.rb',
+                              module: 'MyGem',
+                              version: '2.0.0')
+        Fixtures.file('CHANGELOG.md', <<-END)
+          # Changelog
+
+          ### Version 2.0.0
+        END
+
+        git = Fixtures.git_workspace
+        git.add(all: true)
+        git.commit('Prepare 2.0 release')
+        Fixtures.git_remote_repository('origin')
 
         Tasks.install
 
@@ -140,6 +166,7 @@ module Semmy
         git.add(all: true)
         git.commit('Prepare 1.5 release')
         git.branch('1-x-stable').checkout
+        Fixtures.git_remote_repository('origin')
 
         Tasks.install
 

@@ -67,6 +67,15 @@ Add the tasks to your Rakefile:
 
     Semmy::Tasks.install
 
+You can pass config options:
+
+    # Rakefile
+    require 'semmy'
+
+    Semmy::Tasks.install do |config|
+      # see Semmy::Configuration for options
+    end
+
 ## Usage
 
 Semmy defines a new task to prepare a release:
@@ -99,6 +108,22 @@ The resulting commit graph looks like:
     * (master) Bump version to 1.3.0.dev
     * (v1.2.0, 1-2-stable) Prepare 1.2.0 release
     * Some new feature
+
+By default, the new stable branch and the bump commit are not pushed
+automatically. This can be activated by setting the
+`push_branches_after_release` config option to `true`.
+
+This will be the new default once Semmy 2.0 is released. You can opt
+into the future default behavior globally without changing config
+options on the project level by setting the
+`SEMMY_PUSH_BRANCHES_AFTER_RELEASE` environment variable to `on`.
+
+Branches will be pushed to the remote passed as an argument to the
+`release` task:
+
+    $ rake release[upstream]
+
+By default, branches are pushed to `origin`.
 
 ### Releasing a Patch Level Version
 

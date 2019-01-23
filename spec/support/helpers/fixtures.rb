@@ -49,6 +49,22 @@ module Fixtures
     end
   end
 
+  def git_remote_repository(name)
+    remote_repository_dir_name = "remote-#{name}"
+    file('.git/info/exclude', remote_repository_dir_name)
+
+    Dir.mkdir(remote_repository_dir_name)
+
+    remote_repository = Dir.chdir(remote_repository_dir_name) do
+      Git.init('.', bare: true)
+    end
+
+    Git.open('.').add_remote(name,
+                             File.join('.', remote_repository_dir_name))
+
+    remote_repository
+  end
+
   private
 
   def from_fixture(path, name, interpolations)

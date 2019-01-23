@@ -6,18 +6,46 @@ module Semmy
       def define
         namespace 'branches' do
           task 'create_stable' do
-            name = config.stable_branch_name %
-              VersionString.components(Project.version)
+            Shell.info("Creating stable branch #{stable_branch_name}.")
 
-            Shell.info("Creating stable branch #{name}.")
+            git.branch(stable_branch_name).create
+          end
 
-            git.branch(name).create
+          task 'push_master', [:remote] do |_, args|
+            push_branch(args[:remote], 'master')
+          end
+
+          task 'push_previous_stable', [:remote] do |_, args|
+            push_branch(args[:remote], previous_stable_branch_name)
           end
         end
+      end
 
-        def git
-          Git.open('.')
+      private
+
+      def stable_branch_name
+        VersionString.stable_branch_name(Project.version,
+                                         config.stable_branch_name)
+      end
+
+      def previous_stable_branch_name
+        VersionString.previous_stable_branch_name(Project.version,
+                                                  config.stable_branch_name)
+      end
+
+      def push_branch(remote, name)
+        remote ||= 'origin'
+
+        if config.push_branches_after_release
+          Shell.info("Pushing #{name} to #{remote}.")
+          git.push(remote, name)
+        else
+          Shell.info("NOTE: Remember to push #{name} to #{remote}.")
         end
+      end
+
+      def git
+        Git.open('.')
       end
     end
   end

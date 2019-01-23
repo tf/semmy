@@ -3,6 +3,7 @@ module Semmy
     attr_accessor :development_version_suffix
 
     attr_accessor :stable_branch_name
+    attr_accessor :push_branches_after_release
 
     attr_accessor :prepare_commit_message
     attr_accessor :bump_commit_message
@@ -25,6 +26,7 @@ module Semmy
       @development_version_suffix = 'dev'
 
       @stable_branch_name = '%{major}-%{minor}-stable'
+      @push_branches_after_release = ENV['SEMMY_PUSH_BRANCHES_AFTER_RELEASE'] == 'on'
 
       @prepare_commit_message = 'Prepare %{version} release'
       @bump_commit_message = 'Bump version to %{version}'
