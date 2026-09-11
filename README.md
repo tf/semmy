@@ -21,6 +21,28 @@ tags.
 Patch level versions are released via backports to the stable
 branches.
 
+### Jujutsu Repositories
+
+Semmy detects a `.jj` directory and drives
+[Jujutsu](https://jj-vcs.github.io/jj/) instead of Git. Bookmarks take
+the place of branches: since jj has no checked out branch, the
+bookmark of the closest ancestor commit is used and the commit tasks
+move it forward explicitly. The release branch is resolved once per
+rake run, before `branches:create_stable` places a second bookmark on
+the same commit.
+
+Bundler's `release` task still shells out to Git. Colocated jj
+repositories leave `HEAD` detached, which makes its push step fail
+with `src refspec refs/heads/HEAD does not match any`. Attach `HEAD`
+before releasing:
+
+    $ git checkout master
+    $ bundle exec rake release
+
+With an empty working copy commit on top of `master`, this only
+re-attaches `HEAD` without touching any files. jj detaches it again on
+its next working copy update.
+
 ### Version Suffix
 
 The version in the gem's version file is increased in a separate

@@ -1,5 +1,3 @@
-require 'git'
-
 module Semmy
   module Tasks
     class Branches < Base
@@ -8,7 +6,7 @@ module Semmy
           task 'create_stable' do
             Shell.info("Creating stable branch #{stable_branch_name}.")
 
-            git.branch(stable_branch_name).create
+            Scm.create_branch(stable_branch_name)
           end
 
           task 'push_master', [:remote] do |_, args|
@@ -38,14 +36,10 @@ module Semmy
 
         if config.push_branches_after_release
           Shell.info("Pushing #{name} to #{remote}.")
-          git.push(remote, name)
+          Scm.push(remote, name)
         else
           Shell.info("NOTE: Remember to push #{name} to #{remote}.")
         end
-      end
-
-      def git
-        Git.open('.')
       end
     end
   end

@@ -1,6 +1,7 @@
 require 'unindent'
 require 'fileutils'
 require 'git'
+require 'open3'
 
 module Fixtures
   extend self
@@ -65,6 +66,35 @@ module Fixtures
     remote_repository
   end
 
+  def jj_workspace
+    git_workspace
+
+    jj('git', 'init', '--colocate')
+    jj('config', 'set', '--repo', 'user.name', 'Test user')
+    jj('config', 'set', '--repo', 'user.email', 'test@example.com')
+  end
+
+  def jj_commit(message, bookmark: nil)
+    jj('commit', '--message', message)
+    jj_bookmark(bookmark, revision: '@-') if bookmark
+  end
+
+  def jj_bookmark(name, revision:)
+    jj('bookmark', 'set', name, '--revision', revision)
+  end
+
+  def jj_commit_id(revision)
+    jj_log(revision, 'commit_id')
+  end
+
+  def jj_description(revision)
+    jj_log(revision, 'description.first_line()')
+  end
+
+  def jj_available?
+    system('jj', '--version', out: File::NULL, err: File::NULL)
+  end
+
   private
 
   def from_fixture(path, name, interpolations)
@@ -75,6 +105,18 @@ module Fixtures
 
     file(path, contents)
   end
+
+  def jj_log(revision, template)
+    jj('log', '--no-graph', '--revisions', revision, '--template', template).strip
+  end
+
+  def jj(*args)
+    output, status = Open3.capture2e('jj', *args)
+
+    raise("Command `jj #{args.join(' ')}` failed:\n#{output}") unless status.success?
+
+    output
+  end
 end
 
 RSpec.configure do |config|
@@ -84,6 +126,10 @@ RSpec.configure do |config|
         example.call
       end
     end
+  end
+
+  config.before(:example, jj: true) do
+    skip('jj executable not found') unless Fixtures.jj_available?
   end
 
   config.before(:example) do
