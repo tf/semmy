@@ -21,6 +21,9 @@ module Semmy
         repository.push(remote, name)
       end
 
+      def attach_git_head(_branch)
+      end
+
       private
 
       def repository

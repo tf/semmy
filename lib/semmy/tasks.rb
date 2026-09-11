@@ -26,6 +26,8 @@ module Semmy
         Branches.new(config)
       end
 
+      task 'release:source_control_push' => 'semmy:branches:attach_git_head'
+
       desc 'Prepare minor or major release'
       task 'release:prepare:master' => [
         'semmy:versioning:remove_development_version_suffix',

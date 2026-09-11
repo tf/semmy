@@ -66,6 +66,14 @@ module Fixtures
     remote_repository
   end
 
+  def git_current_branch
+    Git.open('.').current_branch
+  end
+
+  def git_status
+    `git status --porcelain`
+  end
+
   def jj_workspace
     git_workspace
 

@@ -2,6 +2,16 @@ require 'spec_helper'
 
 module Semmy
   describe Tasks, fixture_files: true do
+    describe 'release:source_control_push task' do
+      it 'attaches git head before bundler pushes' do
+        Tasks.install
+
+        result = Rake.application['release:source_control_push'].prerequisites
+
+        expect(result).to include('semmy:branches:attach_git_head')
+      end
+    end
+
     describe 'release:prepare task' do
       it 'passes on master' do
         Fixtures.gemspec(name: 'my_gem', module: 'MyGem')

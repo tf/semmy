@@ -166,6 +166,39 @@ module Semmy
             .to raise_error(Jj::BookmarkNotFound)
         end
       end
+
+      describe '.attach_git_head' do
+        it 'points git head at bookmark' do
+          Fixtures.jj_workspace
+          Fixtures.file('some', 'text')
+          Fixtures.jj_commit('Prepare 1.4.0 release', bookmark: 'master')
+
+          Jj.attach_git_head('master')
+
+          expect(Fixtures.git_current_branch).to eq('master')
+        end
+
+        it 'leaves working copy unchanged' do
+          Fixtures.jj_workspace
+          Fixtures.file('some', 'text')
+          Fixtures.jj_commit('Prepare 1.4.0 release', bookmark: 'master')
+
+          Jj.attach_git_head('master')
+
+          expect(Fixtures.git_status).to be_empty
+        end
+
+        it 'fails when git head is not at bookmark' do
+          Fixtures.jj_workspace
+          Fixtures.file('some', 'text')
+          Fixtures.jj_commit('Prepare 1.4.0 release', bookmark: 'master')
+          Fixtures.file('other', 'text')
+          Fixtures.jj_commit('Commit without bookmark')
+
+          expect { Jj.attach_git_head('master') }
+            .to raise_error(Jj::GitHeadMismatch)
+        end
+      end
     end
   end
 end

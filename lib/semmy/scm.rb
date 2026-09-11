@@ -31,6 +31,10 @@ module Semmy
       repository.push(remote, name)
     end
 
+    def attach_git_head
+      repository.attach_git_head(release_branch)
+    end
+
     def release_branch
       @release_branch ||= repository.current_branch
     end

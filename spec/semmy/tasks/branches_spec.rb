@@ -135,6 +135,33 @@ module Semmy
         end
       end
 
+      describe 'attach_git_head task' do
+        it 'points git head at release branch', jj: true do
+          Fixtures.jj_workspace
+          Fixtures.file('some', 'text')
+          Fixtures.jj_commit('Prepare 1.4.0 release', bookmark: 'master')
+
+          Branches.new
+
+          Rake.application['branches:attach_git_head'].invoke
+
+          expect(Fixtures.git_current_branch).to eq('master')
+        end
+
+        it 'keeps branch checked out in git repository' do
+          Fixtures.file('some', 'text')
+          git = Fixtures.git_workspace
+          git.add(all: true)
+          git.commit('Prepare 1.4.0 release')
+
+          Branches.new
+
+          Rake.application['branches:attach_git_head'].invoke
+
+          expect(git.current_branch).to eq('master')
+        end
+      end
+
       it 'pushing can be disabled' do
         Fixtures.gemspec(name: 'my_gem', module: 'MyGem')
         Fixtures.version_file('lib/my_gem/version.rb',

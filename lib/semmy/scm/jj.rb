@@ -7,6 +7,7 @@ module Semmy
 
       class CommandFailed < Error; end
       class BookmarkNotFound < Error; end
+      class GitHeadMismatch < Error; end
 
       def current_branch
         jj('log', '--no-graph',
@@ -34,6 +35,20 @@ module Semmy
         jj('git', 'push', '--remote', remote, '--bookmark', name)
       end
 
+      def attach_git_head(branch)
+        bookmark = required_bookmark(branch)
+        reference = "refs/heads/#{bookmark}"
+
+        unless git('rev-parse', 'HEAD') == git('rev-parse', reference)
+          fail(GitHeadMismatch,
+               "Git HEAD is not at #{bookmark}. " \
+               "Run `jj new #{bookmark}` before releasing.")
+        end
+
+        Shell.info("Attaching git HEAD to #{bookmark}.")
+        git('symbolic-ref', 'HEAD', reference)
+      end
+
       private
 
       def required_bookmark(name)
@@ -47,10 +62,19 @@ module Semmy
       end
 
       def jj(*args)
-        stdout, stderr, status = Open3.capture3('jj', *args)
+        run('jj', *args)
+      end
+
+      def git(*args)
+        run('git', *args)
+      end
+
+      def run(command, *args)
+        stdout, stderr, status = Open3.capture3(command, *args)
 
         unless status.success?
-          fail(CommandFailed, "Command `jj #{args.join(' ')}` failed:\n#{stderr}")
+          fail(CommandFailed,
+               "Command `#{command} #{args.join(' ')}` failed:\n#{stderr}")
         end
 
         Shell.sub_process_output(stderr.chomp) unless stderr.empty?

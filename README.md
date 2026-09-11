@@ -31,17 +31,17 @@ move it forward explicitly. The release branch is resolved once per
 rake run, before `branches:create_stable` places a second bookmark on
 the same commit.
 
-Bundler's `release` task still shells out to Git. Colocated jj
-repositories leave `HEAD` detached, which makes its push step fail
-with `src refspec refs/heads/HEAD does not match any`. Attach `HEAD`
-before releasing:
+Bundler's `release` task shells out to Git, and colocated jj
+repositories leave `HEAD` detached, which would make its push step
+fail with `src refspec refs/heads/HEAD does not match any`. Semmy
+attaches `HEAD` to the release branch in a prerequisite of Bundler's
+`release:source_control_push` task. Only the ref is moved, never the
+working copy, and jj detaches `HEAD` again on its next working copy
+update.
 
-    $ git checkout master
-    $ bundle exec rake release
-
-With an empty working copy commit on top of `master`, this only
-re-attaches `HEAD` without touching any files. jj detaches it again on
-its next working copy update.
+This requires the working copy commit to sit directly on top of the
+release branch. Otherwise the release aborts with a hint to run
+`jj new master`.
 
 ### Version Suffix
 

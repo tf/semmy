@@ -16,6 +16,10 @@ module Semmy
           task 'push_previous_stable', [:remote] do |_, args|
             push_branch(args[:remote], previous_stable_branch_name)
           end
+
+          task 'attach_git_head' do
+            Scm.attach_git_head
+          end
         end
       end
 
